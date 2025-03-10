@@ -1,110 +1,131 @@
-import { ChangeEvent, useRef, useState } from "react";
-import photo from "../assets/photo.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { useState, useRef, ChangeEvent } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { registerUser, googleSignin, IUser } from "../services/user-service";
 import { uploadPhoto } from "../services/file-service";
-import { registrUser, googleSignin, IUser } from "../services/user-service";
-import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import Alert from "./Alert";
+import "./Registration.css";
 
 function Registration() {
-  const [imgSrc, setImgSrc] = useState<File>();
+  const [imgSrc, setImgSrc] = useState<File | null>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const emailInputRef = useRef<HTMLInputElement>(null);
-  const passwordInputRef = useRef<HTMLInputElement>(null);
-  const imgSelected = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    if (e.target.files && e.target.files.length > 0) {
+  const handleImgChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
       setImgSrc(e.target.files[0]);
     }
   };
-  const selectImg = () => {
-    console.log("Selecting image...");
-    fileInputRef.current?.click();
-  };
 
   const register = async () => {
-    const url = await uploadPhoto(imgSrc!);
-    console.log("upload returned:" + url);
-    if (emailInputRef.current?.value && passwordInputRef.current?.value) {
-      const user: IUser = {
-        email: emailInputRef.current?.value,
-        password: passwordInputRef.current?.value,
-        imgUrl: url,
-      };
-      const res = await registrUser(user);
-      console.log(res);
+    const username = usernameRef.current?.value;
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+    const confirmPassword = confirmPasswordRef.current?.value;
+
+    if (!username || !email || !password || !confirmPassword) {
+      Alert("Please fill out all fields.", "error");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert("Passwords do not match.", "error");
+      return;
+    }
+
+    //use this code when you we use server
+    // let imgUrl = "";
+    // if (imgSrc) {
+    //   imgUrl = await uploadPhoto(imgSrc);
+    // }
+
+    let imgUrl = "";
+    if (imgSrc) {
+      try {
+        imgUrl = await uploadPhoto(imgSrc);
+      } catch (error) {
+        console.error("Image upload failed, skipping image:", error);
+        imgUrl = ""; // Reset imgUrl to empty string
+      }
+    }
+
+    const user: IUser = { username, email, password, imgUrl };
+
+    try {
+      await registerUser(user);
+      Alert("Registration successful!", "success");
+      navigate("/dashboard");
+    } catch {
+      Alert("Registration failed due to server error.", "error");
     }
   };
 
-  const onGoogleLoginSuccess = async (
+  const handleGoogleLoginSuccess = async (
     credentialResponse: CredentialResponse
   ) => {
-    console.log(credentialResponse);
     try {
-      const res = await googleSignin(credentialResponse);
-      console.log(res);
-    } catch (e) {
-      console.log(e);
+      await googleSignin(credentialResponse);
+      navigate("/dashboard");
+    } catch {
+      Alert("Google registration failed.", "error");
     }
   };
 
-  const onGoogleLoginFailure = () => {
-    console.log("Google login failed");
-  };
   return (
-    <div className="vstack gap-3 col-md-7 mx-auto">
-      <h1>Register</h1>
-      <div className="d-flex justify-content-center position-relative">
+    <div className="registration-container">
+      <h2>Create a DailyDev Account</h2>
+      <input type="file" className="form-control" onChange={handleImgChange} />
+
+      {imgSrc && (
         <img
-          src={imgSrc ? URL.createObjectURL(imgSrc) : photo}
-          style={{ height: "230px", width: "230px" }}
-          className="img-fluid"
+          src={URL.createObjectURL(imgSrc)}
+          alt="Profile Preview"
+          style={{ width: "100px", height: "100px" }}
         />
-        <button
-          type="button"
-          className="btn position-absolute bottom-0 end-0"
-          onClick={selectImg}
-        >
-          <FontAwesomeIcon icon={faImage} className="fa-xl" />
-        </button>
-      </div>
+      )}
 
       <input
-        style={{ display: "none" }}
-        ref={fileInputRef}
-        type="file"
-        onChange={imgSelected}
-      ></input>
+        ref={usernameRef}
+        type="text"
+        placeholder="Username"
+        className="form-control mt-2"
+      />
+      <input
+        ref={emailRef}
+        type="email"
+        placeholder="Email"
+        className="form-control mt-2"
+      />
+      <input
+        ref={passwordRef}
+        type="password"
+        placeholder="Password"
+        className="form-control mt-2"
+      />
+      <input
+        ref={confirmPasswordRef}
+        type="password"
+        placeholder="Confirm Password"
+        className="form-control mt-2"
+      />
 
-      <div className="form-floating">
-        <input
-          ref={emailInputRef}
-          type="text"
-          className="form-control"
-          id="floatingInput"
-          placeholder=""
-        />
-        <label htmlFor="floatingInput">Email</label>
-      </div>
-      <div className="form-floating">
-        <input
-          ref={passwordInputRef}
-          type="password"
-          className="form-control"
-          id="floatingPassword"
-          placeholder=""
-        />
-        <label htmlFor="floatingPassword">Password</label>
-      </div>
-      <button type="button" className="btn btn-primary" onClick={register}>
+      <button className="btn btn-primary mt-3" onClick={register}>
         Register
       </button>
 
-      <GoogleLogin
-        onSuccess={onGoogleLoginSuccess}
-        onError={onGoogleLoginFailure}
-      />
+      <div className="mt-3">
+        <GoogleLogin
+          onSuccess={handleGoogleLoginSuccess}
+          onError={() => Alert("Google login error.", "error")}
+        />
+      </div>
+
+      <p className="mt-3">
+        Already have an account? <Link to="/login">Log in</Link>
+      </p>
     </div>
   );
 }

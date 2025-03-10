@@ -1,0 +1,33 @@
+.login-page {
+  background: url("https://source.unsplash.com/random/?programming") no-repeat
+    center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-container {
+  width: 400px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.form-control {
+  margin-bottom: 15px;
+}
+
+.btn-primary {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.google-btn {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}

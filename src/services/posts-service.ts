@@ -1,18 +1,3 @@
-// import apiClient, { CanceledError } from "./api-client";
-
-// import { PostData } from "../components/Post";
-
-// export { CanceledError };
-// const getAllPosts = () => {
-//   const abortController = new AbortController();
-//   const req = apiClient.get<PostData[]>("studentpost", {
-//     signal: abortController.signal,
-//   });
-//   return { req, abort: () => abortController.abort() };
-// };
-
-// export default { getAllPosts };
-
 import apiClient from "./api-client";
 
 export interface Post {
@@ -23,7 +8,7 @@ export interface Post {
   createdAt: string;
 }
 
-// ✅ קבלת כל הפוסטים
+//getAllPosts
 export const getPosts = async () => {
   try {
     const response = await apiClient.get<Post[]>("/posts");
@@ -34,7 +19,7 @@ export const getPosts = async () => {
   }
 };
 
-// ✅ קבלת פוסט לפי ID
+// getPostById
 export const getPostById = async (id: number) => {
   try {
     const response = await apiClient.get<Post>(`/posts/${id}`);
@@ -45,7 +30,7 @@ export const getPostById = async (id: number) => {
   }
 };
 
-// ✅ יצירת פוסט חדש
+//createPost
 export const createPost = async (post: Omit<Post, "id" | "createdAt">) => {
   try {
     const response = await apiClient.post<Post>("/posts", post);
@@ -56,7 +41,7 @@ export const createPost = async (post: Omit<Post, "id" | "createdAt">) => {
   }
 };
 
-// ✅ עדכון פוסט קיים
+//updatePost
 export const updatePost = async (id: number, post: Partial<Post>) => {
   try {
     const response = await apiClient.put<Post>(`/posts/${id}`, post);
@@ -67,7 +52,7 @@ export const updatePost = async (id: number, post: Partial<Post>) => {
   }
 };
 
-// ✅ מחיקת פוסט
+//deletePost
 export const deletePost = async (id: number) => {
   try {
     await apiClient.delete(`/posts/${id}`);
