@@ -1,0 +1,17 @@
+.comment-container {
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.comment-container p {
+  margin: 5px 0;
+}
+
+.btn-delete {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+}
