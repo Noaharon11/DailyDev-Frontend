@@ -132,13 +132,11 @@
 
 // export default Registration;
 
-import { Link, useNavigate } from "react-router-dom";
-import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { Link } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 import { useRegister } from "../hooks/useRegister";
-import { googleSignin, registerUser } from "../services/user-service";
-import { IUser } from "../types";
-import Alert from "../components/Alert";
 import "./Registration.css";
+import Alert from "../components/Alert";
 
 function Registration() {
   const {
@@ -148,40 +146,8 @@ function Registration() {
     imgSrc,
     handleImgChange,
     register,
+    handleGoogleLoginSuccess,
   } = useRegister();
-
-  const navigate = useNavigate(); // ניווט לאחר התחברות מוצלחת
-
-  // ✅ פונקציה שמבצעת הרשמה או התחברות לפי מצב המשתמש
-  const handleGoogleLoginSuccess = async (
-    credentialResponse: CredentialResponse
-  ) => {
-    try {
-      let user = await googleSignin(credentialResponse); // ניסיון למשוך נתוני משתמש
-
-      if (!user) {
-        // אם המשתמש חדש, נרשום אותו
-        const email = credentialResponse?.credential
-          ? JSON.parse(atob(credentialResponse.credential.split(".")[1])).email
-          : "";
-        const username = email.split("@")[0]; // יצירת שם משתמש מהאימייל
-
-        user = {
-          username,
-          email,
-          imgUrl: "",
-        } as IUser;
-
-        await registerUser(user); // שמירת המשתמש
-      }
-
-      localStorage.setItem("user", JSON.stringify(user)); // שמירת הנתונים בלוקאל סטורג'
-      Alert("Google Registration successful!", "success");
-      navigate("/dashboard"); // ניווט ללוח הבקרה
-    } catch {
-      Alert("Google registration failed.", "error");
-    }
-  };
 
   return (
     <div className="registration-container">
@@ -221,7 +187,7 @@ function Registration() {
 
       <div className="mt-3">
         <GoogleLogin
-          onSuccess={handleGoogleLoginSuccess} // ✅ קריאה לפונקציה שמבצעת הרשמה או התחברות
+          onSuccess={handleGoogleLoginSuccess}
           onError={() => Alert("Google login error.", "error")}
         />
       </div>

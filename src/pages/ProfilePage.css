@@ -1,39 +1,52 @@
 .profile-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
   text-align: center;
-  padding: 40px;
 }
 
-.profile-header {
+.profile-info {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 15px;
 }
 
-.profile-img {
-  width: 100px;
-  height: 100px;
+.profile-pic {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  border: 3px solid #007bff;
+  object-fit: cover;
+  border: 3px solid #2c3e50;
 }
 
-.btn-edit {
-  background: #007bff;
-  color: white;
+.upload-btn {
+  background-color: #ffcc00;
+  color: black;
+  font-weight: bold;
   border: none;
-  padding: 10px 15px;
-  border-radius: 6px;
+  padding: 8px 12px;
   cursor: pointer;
-  transition: background 0.3s;
 }
 
-.btn-edit:hover {
-  background: #0056b3;
+.upload-btn:hover {
+  background-color: #ffaa00;
 }
 
-.profile-posts {
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: left;
+.file-input {
+  display: none;
+}
+
+.save-btn {
+  margin-top: 10px;
+  background-color: #2c3e50;
+  color: white;
+  font-weight: bold;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background-color: #1a252f;
 }

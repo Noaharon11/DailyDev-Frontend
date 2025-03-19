@@ -1,68 +1,106 @@
 import apiClient from "./api-client";
 import { CredentialResponse } from "@react-oauth/google";
-import { IUser } from "../types";
+import { IUser, AuthResponse } from "../types";
 
-// function for saving user to local storage
-const saveUserToLocalStorage = (user: IUser) => {
+// Register new user
+export const registerUser = async (
+  userData: Partial<IUser>
+): Promise<AuthResponse> => {
+  const response = await apiClient.post<AuthResponse>(
+    "/auth/register",
+    userData
+  );
+
+  // Save tokens and user data
+  const { user, accessToken, refreshToken } = response.data;
+  localStorage.setItem("token", accessToken);
+  localStorage.setItem("refreshToken", refreshToken);
   localStorage.setItem("user", JSON.stringify(user));
+
+  return response.data;
 };
 
-// function for getting user from local storage
-const getUserFromLocalStorage = (): IUser | null => {
-  const storedUser = localStorage.getItem("user");
-  return storedUser ? JSON.parse(storedUser) : null;
+// Login with email & password
+export const loginUser = async (
+  email: string,
+  password: string
+): Promise<AuthResponse> => {
+  const response = await apiClient.post<AuthResponse>("/auth/login", {
+    email,
+    password,
+  });
+
+  // Save tokens and user data
+  const { user, accessToken, refreshToken } = response.data;
+  localStorage.setItem("token", accessToken);
+  localStorage.setItem("refreshToken", refreshToken);
+  localStorage.setItem("user", JSON.stringify(user));
+
+  return response.data;
 };
 
-// function for registering user and saving to local storage
-export const registerUser = async (user: IUser) => {
-  saveUserToLocalStorage(user);
-  return Promise.resolve(user);
-};
-
-// login user check if user exists in local storage
-export const loginUser = async ({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) => {
-  const storedUser = getUserFromLocalStorage();
-
-  if (!storedUser) return Promise.reject("User not found");
-
-  if (storedUser.email === email && storedUser.password === password) {
-    return Promise.resolve(storedUser);
-  } else {
-    return Promise.reject("Email or password incorrect");
-  }
-};
-
-// login user with google and save to local storage
+// Google Sign-In
 export const googleSignin = async (
   credentialResponse: CredentialResponse
-): Promise<IUser> => {
-  try {
-    const res = await apiClient.post<IUser>(
-      "/auth/google-signin",
-      credentialResponse
-    );
-    const googleUser = res.data;
+): Promise<AuthResponse> => {
+  const response = await apiClient.post<AuthResponse>(
+    "/auth/google-signin",
+    credentialResponse
+  );
 
-    // create username from email
-    if (!googleUser.username) {
-      googleUser.username = googleUser.email.split("@")[0];
-    }
+  // Save tokens and user data
+  const { user, accessToken, refreshToken } = response.data;
+  localStorage.setItem("token", accessToken);
+  localStorage.setItem("refreshToken", refreshToken);
+  localStorage.setItem("user", JSON.stringify(user));
 
-    saveUserToLocalStorage(googleUser);
-    return googleUser;
-  } catch (error) {
-    console.error("Google sign-in error:", error);
-    throw error;
-  }
+  return response.data;
 };
 
-// logout user by removing user from local storage
-export const logoutUser = () => {
-  localStorage.removeItem("user");
+// Get user profile
+export const getUserProfile = async (userId: string): Promise<IUser> => {
+  const response = await apiClient.get<IUser>(`/user/profile/${userId}`);
+  return response.data;
+};
+
+// Update user profile
+export const updateUserProfile = async (
+  userId: string,
+  updates: Partial<IUser>
+): Promise<IUser> => {
+  const response = await apiClient.put<IUser>(
+    `/user/profile/${userId}`,
+    updates
+  );
+
+  // If updating current user, update localStorage
+  const currentUser = localStorage.getItem("user");
+  if (currentUser) {
+    const user = JSON.parse(currentUser);
+    if (user._id === userId) {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...user, ...response.data })
+      );
+    }
+  }
+
+  return response.data;
+};
+
+// Logout
+export const logoutUser = async () => {
+  try {
+    await apiClient.post("/auth/logout");
+  } catch (error) {
+    console.error("Logout error:", error);
+  } finally {
+    // Clear local storage
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
+
+    // Redirect to login
+    window.location.href = "/login";
+  }
 };

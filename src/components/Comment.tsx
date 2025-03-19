@@ -1,20 +1,11 @@
 import { IComment } from "../types";
-import "./Comment.css";
 
-interface CommentProps extends IComment {
-  onDelete?: () => void;
-}
-
-function Comment({ username, text, onDelete }: CommentProps) {
+function Comment({ owner, content }: IComment) {
   return (
-    <div className="comment-container">
-      <strong>{username}</strong>
-      <p>{text}</p>
-      {onDelete && (
-        <button className="btn-delete" onClick={onDelete}>
-          🗑️ Delete
-        </button>
-      )}
+    <div className="comment">
+      <p>
+        <strong>{owner}:</strong> {content}
+      </p>
     </div>
   );
 }

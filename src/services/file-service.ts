@@ -1,28 +1,17 @@
 import apiClient from "./api-client";
 
-interface IUpoloadResponse {
-  url: string;
-}
-export const uploadPhoto = async (photo: File) => {
-  return new Promise<string>((resolve, reject) => {
-    console.log("Uploading photo..." + photo);
-    const formData = new FormData();
-    if (photo) {
-      formData.append("file", photo);
-      apiClient
-        .post<IUpoloadResponse>("file?file=123.jpeg", formData, {
-          headers: {
-            "Content-Type": "image/jpeg",
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          resolve(res.data.url);
-        })
-        .catch((err) => {
-          console.log(err);
-          reject(err);
-        });
+// ✅ Upload user avatar
+export const uploadUserAvatar = async (userId: string, file: File) => {
+  const formData = new FormData();
+  formData.append("avatar", file); // 🔥 השדה הנכון לפי השרת של לי
+
+  const response = await apiClient.put<string>(
+    `/user/profile?userId=${userId}`,
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
     }
-  });
+  );
+
+  return response.data; // ✅ מחזיר את ה-URL של התמונה החדשה
 };

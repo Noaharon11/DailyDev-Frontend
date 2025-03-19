@@ -1,19 +1,19 @@
 export interface IUser {
-  _id?: string;
+  _id: string;
   username: string;
   email: string;
   password?: string;
-  avatar?: string;
+  imgUrl?: string;
   bio?: string;
-  refreshTokens?: string[];
-  posts?: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IPost {
   _id: string;
-  title: string;
-  content: string;
   owner: string;
+  content: string;
+  image?: string;
   likes: number;
   commentsCount: number;
   createdAt?: string;
@@ -22,8 +22,21 @@ export interface IPost {
 
 export interface IComment {
   _id: string;
-  postId: string;
   owner: string;
+  postId: string;
   content: string;
+  likes: number;
   createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface AuthResponse {
+  user: IUser;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface ErrorResponse {
+  message: string;
+  status: number;
 }

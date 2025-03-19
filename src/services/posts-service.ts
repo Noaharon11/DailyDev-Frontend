@@ -1,64 +1,80 @@
 import apiClient from "./api-client";
+import { IPost } from "../types";
 
-export interface Post {
-  id: number;
-  title: string;
-  content: string;
-  author: string;
-  createdAt: string;
-}
-
-//getAllPosts
-export const getPosts = async () => {
+// Fetch all posts
+export const fetchAllPosts = async (): Promise<IPost[]> => {
   try {
-    const response = await apiClient.get<Post[]>("/posts");
+    const response = await apiClient.get<IPost[]>("/posts");
     return response.data;
   } catch (error) {
-    console.error("Error fetching posts:", error);
+    console.error("Failed to fetch posts:", error);
     throw error;
   }
 };
 
-// getPostById
-export const getPostById = async (id: number) => {
+// Fetch posts by user
+export const fetchPostsByUser = async (userId: string): Promise<IPost[]> => {
   try {
-    const response = await apiClient.get<Post>(`/posts/${id}`);
+    const response = await apiClient.get<IPost[]>(`/posts/user/${userId}`);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching post with ID ${id}:`, error);
+    console.error("Failed to fetch user posts:", error);
     throw error;
   }
 };
 
-//createPost
-export const createPost = async (post: Omit<Post, "id" | "createdAt">) => {
+// Create a new post
+export const createPost = async (
+  content: string,
+  image?: File
+): Promise<IPost> => {
   try {
-    const response = await apiClient.post<Post>("/posts", post);
+    const formData = new FormData();
+    formData.append("content", content);
+    if (image) {
+      formData.append("image", image);
+    }
+
+    const response = await apiClient.post<IPost>("/posts", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error creating post:", error);
+    console.error("Failed to create post:", error);
     throw error;
   }
 };
 
-//updatePost
-export const updatePost = async (id: number, post: Partial<Post>) => {
+// Like a post
+export const likePost = async (postId: string): Promise<IPost> => {
   try {
-    const response = await apiClient.put<Post>(`/posts/${id}`, post);
+    const response = await apiClient.post<IPost>(`/posts/${postId}/like`);
     return response.data;
   } catch (error) {
-    console.error(`Error updating post with ID ${id}:`, error);
+    console.error("Failed to like post:", error);
     throw error;
   }
 };
 
-//deletePost
-export const deletePost = async (id: number) => {
+// Unlike a post
+export const unlikePost = async (postId: string): Promise<IPost> => {
   try {
-    await apiClient.delete(`/posts/${id}`);
-    console.log(`Post with ID ${id} deleted successfully`);
+    const response = await apiClient.post<IPost>(`/posts/${postId}/unlike`);
+    return response.data;
   } catch (error) {
-    console.error(`Error deleting post with ID ${id}:`, error);
+    console.error("Failed to unlike post:", error);
+    throw error;
+  }
+};
+
+// Delete a post
+export const deletePost = async (postId: string): Promise<void> => {
+  try {
+    await apiClient.delete(`/posts/${postId}`);
+  } catch (error) {
+    console.error("Failed to delete post:", error);
     throw error;
   }
 };
