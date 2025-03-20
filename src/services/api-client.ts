@@ -1,12 +1,14 @@
 import axios from "axios";
 
+// Keep the original way you handled environment variables
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true,
+  withCredentials: true, // Ensures cookies and authentication are handled correctly
 });
 
-//  Attach token to every request
+// Attach token to every request
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -18,7 +20,7 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-//  Global error handling
+// Global error handling
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -26,7 +28,7 @@ apiClient.interceptors.response.use(
       if (error.response?.status === 401) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        window.location.href = "/login";
+        window.location.href = "/login"; // Redirect to login on unauthorized access
       }
 
       const message =

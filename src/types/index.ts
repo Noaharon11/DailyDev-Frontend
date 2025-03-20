@@ -1,4 +1,4 @@
-// types/index.ts
+// ✅ Updated types/index.ts - Fully aligned with backend
 
 export interface IUser {
   _id: string;
@@ -15,8 +15,8 @@ export interface IPost {
   author: IUser | string;
   content: string;
   imageUrl?: string;
-  likes: (string | IUser)[];
-  commentsCount?: number;
+  likes: (string | IUser)[]; // Users who liked the post
+  commentsCount?: number; // Total number of comments on the post
   createdAt?: string;
   updatedAt?: string;
 }
@@ -26,14 +26,14 @@ export interface IComment {
   ownerId: string;
   postId: string;
   content: string;
-  likes: string[];
+  likes: string[]; // Array of user IDs who liked the comment
   createdAt?: string;
   updatedAt?: string;
 }
 
+// ✅ Fixed `AuthResponse` - Now includes `user`
 export interface AuthResponse {
-  _id: string;
-  email: string;
+  user: IUser; // Now it includes the user object
   accessToken: string;
   refreshToken: string;
 }

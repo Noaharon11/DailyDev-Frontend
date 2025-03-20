@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { CredentialResponse } from "@react-oauth/google";
 import { loginUser, googleSignin } from "../services/user-service";
 import Alert from "../components/Alert";
+import { AuthResponse } from "../types/index"; // Ensure correct import
 
 export const useLogin = () => {
   const [error, setError] = useState<string | null>(null);
@@ -15,8 +16,16 @@ export const useLogin = () => {
       setError(null);
 
       try {
-        const user = await loginUser(email, password);
+        const authResponse: AuthResponse = await loginUser(email, password);
+
+        //  Extract user and tokens correctly
+        const { user, accessToken, refreshToken } = authResponse;
+
+        //  Save them in local storage
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
         localStorage.setItem("user", JSON.stringify(user));
+
         navigate("/dashboard");
       } catch (err: unknown) {
         const errorMessage =
@@ -42,11 +51,18 @@ export const useLogin = () => {
           );
         }
 
-        const user = await googleSignin({
-          credential: credentialResponse.credential,
-        });
+        const authResponse: AuthResponse = await googleSignin(
+          credentialResponse
+        ); //  Get correct response
 
+        //  Extract user and tokens correctly
+        const { user, accessToken, refreshToken } = authResponse;
+
+        //  Save them in local storage
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
         localStorage.setItem("user", JSON.stringify(user));
+
         navigate("/dashboard");
       } catch (err: unknown) {
         const errorMessage =

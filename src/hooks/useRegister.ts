@@ -4,13 +4,14 @@ import { registerUser, googleSignin } from "../services/user-service";
 import { uploadFile } from "../services/file-service";
 import Alert from "../components/Alert";
 import { CredentialResponse } from "@react-oauth/google";
+import { AuthResponse } from "../types/index"; // Ensure correct import
 
-// 📌 פונקציה לבדיקת תקינות מייל
+// ✅ Validate email format
 const isValidEmail = (email: string): boolean => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
-// 📌 פונקציה לבדיקת חוזק הסיסמה
+// ✅ Validate password strength
 const isStrongPassword = (password: string): boolean => {
   return password.length >= 6;
 };
@@ -23,14 +24,14 @@ export function useRegister() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  // 📌 עדכון תמונת פרופיל
+  // ✅ Handle profile image selection
   const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setImgSrc(e.target.files[0]);
     }
   };
 
-  // 📌 הרשמה רגילה
+  // ✅ Register with email and password
   const register = useCallback(async () => {
     setLoading(true);
     try {
@@ -38,7 +39,7 @@ export function useRegister() {
       const password = passwordRef.current?.value?.trim();
       const confirmPassword = confirmPasswordRef.current?.value?.trim();
 
-      // 📌 בדיקת קלט תקין
+      // ✅ Validate input fields
       if (!email || !password || !confirmPassword) {
         Alert("Please fill out all fields.", "error");
         return;
@@ -58,14 +59,19 @@ export function useRegister() {
 
       const username = email.split("@")[0];
 
-      // 📌 שליחת בקשה לרישום
-      let newUser = await registerUser({ username, email, password });
+      // ✅ Send registration request and ensure correct type
+      const authResponse: AuthResponse = await registerUser({
+        username,
+        email,
+        password,
+      });
 
-      // 📌 אם יש תמונה, נעלה אותה לשרת
+      // ✅ Upload profile image if provided
+      let user = authResponse.user; // Ensure we're using the correct user object
       if (imgSrc) {
         try {
           const imageUrl = await uploadFile(imgSrc);
-          newUser = { ...newUser, imageUrl };
+          user = { ...user, imageUrl }; // Update user with the image URL
         } catch (error) {
           console.error("❌ Avatar upload error:", error);
           Alert(
@@ -75,8 +81,11 @@ export function useRegister() {
         }
       }
 
-      // 📌 שמירת המשתמש בלוקאל סטורג'
-      localStorage.setItem("user", JSON.stringify(newUser));
+      // ✅ Store user and tokens in local storage
+      localStorage.setItem("token", authResponse.accessToken);
+      localStorage.setItem("refreshToken", authResponse.refreshToken);
+      localStorage.setItem("user", JSON.stringify(user));
+
       Alert("Registration successful!", "success");
       navigate("/dashboard");
     } catch (error: unknown) {
@@ -87,7 +96,7 @@ export function useRegister() {
     }
   }, [imgSrc, navigate]);
 
-  // 📌 התחברות עם Google
+  // ✅ Handle Google authentication
   const handleGoogleLoginSuccess = useCallback(
     async (credentialResponse: CredentialResponse) => {
       setLoading(true);
@@ -98,11 +107,15 @@ export function useRegister() {
           );
         }
 
-        const user = await googleSignin({
-          credential: credentialResponse.credential,
-        });
+        const authResponse: AuthResponse = await googleSignin(
+          credentialResponse
+        );
 
-        localStorage.setItem("user", JSON.stringify(user));
+        // ✅ Store user and tokens in local storage
+        localStorage.setItem("token", authResponse.accessToken);
+        localStorage.setItem("refreshToken", authResponse.refreshToken);
+        localStorage.setItem("user", JSON.stringify(authResponse.user));
+
         Alert("Google Registration successful!", "success");
         navigate("/dashboard");
       } catch (error: unknown) {

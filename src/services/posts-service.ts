@@ -1,66 +1,103 @@
 import apiClient from "./api-client";
 import { IPost } from "../types/index";
 
-// Fetch all posts with pagination (optional)
+// ✅ Fetch all posts (supports pagination)
 export const fetchAllPosts = async (page: number = 1): Promise<IPost[]> => {
-  const response = await apiClient.get<IPost[]>("/posts", { params: { page } });
-  return response.data;
+  try {
+    const response = await apiClient.get<IPost[]>("/posts", {
+      params: { page },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    throw new Error("Failed to fetch posts");
+  }
 };
 
-// Fetch post by ID
+// ✅ Fetch a single post by ID
 export const fetchPostById = async (postId: string): Promise<IPost> => {
-  const response = await apiClient.get<IPost>(`/posts/${postId}`);
-  return response.data;
+  try {
+    const response = await apiClient.get<IPost>(`/posts/${postId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching post ${postId}:`, error);
+    throw new Error("Failed to fetch the post");
+  }
 };
 
-// Create a new post
+// ✅ Create a new post (supports text & image upload)
 export const createPost = async (
   content: string,
   image?: File
 ): Promise<IPost> => {
-  const formData = new FormData();
-  formData.append("content", content);
-  if (image) formData.append("file", image);
+  try {
+    const formData = new FormData();
+    formData.append("content", content);
+    if (image) formData.append("file", image);
 
-  const response = await apiClient.post<IPost>("/posts", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-  return response.data;
+    const response = await apiClient.post<IPost>("/posts", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error creating post:", error);
+    throw new Error("Failed to create post");
+  }
 };
 
-// Update an existing post
+// ✅ Update an existing post (supports updating text & image)
 export const updatePost = async (
   postId: string,
   content?: string,
   image?: File
 ): Promise<IPost> => {
-  const formData = new FormData();
-  if (content) formData.append("content", content);
-  if (image) formData.append("file", image);
+  try {
+    const formData = new FormData();
+    if (content) formData.append("content", content);
+    if (image) formData.append("file", image);
 
-  const response = await apiClient.put<IPost>(`/posts/${postId}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-  return response.data;
+    const response = await apiClient.put<IPost>(`/posts/${postId}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating post ${postId}:`, error);
+    throw new Error("Failed to update post");
+  }
 };
 
-// Like or unlike a post (toggle)
+// ✅ Like or unlike a post (toggle)
 export const toggleLikePost = async (
   postId: string
-): Promise<{ likes: number }> => {
-  const response = await apiClient.post<{ likes: number }>(
-    `/posts/${postId}/like`
-  );
-  return response.data;
+): Promise<{ likes: (string | IPost)[] }> => {
+  try {
+    const response = await apiClient.post<{ likes: (string | IPost)[] }>(
+      `/posts/${postId}/like`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Error liking post ${postId}:`, error);
+    throw new Error("Failed to toggle like on post");
+  }
 };
 
-// Delete a post
+// ✅ Delete a post
 export const deletePost = async (postId: string): Promise<void> => {
-  await apiClient.delete(`/posts/${postId}`);
+  try {
+    await apiClient.delete(`/posts/${postId}`);
+  } catch (error) {
+    console.error(`Error deleting post ${postId}:`, error);
+    throw new Error("Failed to delete post");
+  }
 };
 
-// get all posts by user
+// ✅ Fetch all posts by a specific user
 export const fetchPostsByUser = async (userId: string): Promise<IPost[]> => {
-  const response = await apiClient.get<IPost[]>(`/posts/user/${userId}`);
-  return response.data;
+  try {
+    const response = await apiClient.get<IPost[]>(`/posts/user/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching posts for user ${userId}:`, error);
+    throw new Error("Failed to fetch user's posts");
+  }
 };
