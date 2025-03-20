@@ -1,120 +1,35 @@
-// import { Navbar, Nav, Container, NavDropdown, Image } from "react-bootstrap";
-// import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import "./Navbar.css";
 
-// function AppNavbar() {
-//   const navigate = useNavigate();
-
-//   const handleLogout = () => {
-//     localStorage.clear(); // clear login data
-//     navigate("/login");
-//   };
-
-//   return (
-//     <Navbar bg="light" expand="lg" className="shadow-sm">
-//       <Container>
-//         <Navbar.Brand as={Link} to="/">
-//           🚀 DailyDev
-//         </Navbar.Brand>
-//         <Navbar.Toggle aria-controls="navbar-nav" />
-//         <Navbar.Collapse id="navbar-nav">
-//           <Nav className="me-auto">
-//             <Nav.Link as={Link} to="/dashboard">
-//               Dashboard
-//             </Nav.Link>
-//             <Nav.Link as={Link} to="/challenges">
-//               Challenges
-//             </Nav.Link>
-//             <Nav.Link as={Link} to="/chatrooms">
-//               Chatrooms
-//             </Nav.Link>
-//             <Nav.Link as={Link} to="/mylogs">
-//               My Logs
-//             </Nav.Link>
-//           </Nav>
-//           <Nav>
-//             <NavDropdown
-//               title={
-//                 <Image
-//                   src="https://via.placeholder.com/40"
-//                   roundedCircle
-//                   width={40}
-//                   height={40}
-//                 />
-//               }
-//               align="end"
-//             >
-//               <NavDropdown.Item as={Link} to="/profile">
-//                 Profile
-//               </NavDropdown.Item>
-//               <NavDropdown.Divider />
-//               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-//             </NavDropdown>
-//           </Nav>
-//         </Navbar.Collapse>
-//       </Container>
-//     </Navbar>
-//   );
-// }
-
-// export default AppNavbar;
-
-import { Navbar, Nav, Container, NavDropdown, Image } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-
-function AppNavbar() {
-  const navigate = useNavigate();
-  const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
-  };
-
+function Navbar({
+  user,
+  onLogout,
+}: {
+  user: { username: string; imageUrl?: string };
+  onLogout: () => void;
+}) {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="custom-navbar">
-      <Container>
-        <Navbar.Brand as={Link} to="/">
-          🚀 DailyDev
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbar-nav" />
-        <Navbar.Collapse id="navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/dashboard">
-              Dashboard
-            </Nav.Link>
-            <Nav.Link as={Link} to="/challenges">
-              Challenges
-            </Nav.Link>
-            <Nav.Link as={Link} to="/chatrooms">
-              Chatrooms
-            </Nav.Link>
-            <Nav.Link as={Link} to="/mylogs">
-              My Logs
-            </Nav.Link>
-          </Nav>
-          <Nav>
-            <NavDropdown
-              title={
-                <Image
-                  src={storedUser.imgUrl || "https://via.placeholder.com/40"}
-                  roundedCircle
-                  width={40}
-                  height={40}
-                />
-              }
-              align="end"
-            >
-              <NavDropdown.Item as={Link} to="/profile">
-                Profile
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <nav className="navbar">
+      <Link to="/dashboard" className="navbar-logo">
+        🚀 DailyDev
+      </Link>
+      <div className="navbar-links">
+        <Link to="/feed">Feed</Link>
+        <Link to="/challenges">Challenges</Link>
+        <Link to="/leaderboard">Leaderboard</Link>
+        <Link to="/community">Community</Link>
+      </div>
+      <div className="navbar-user">
+        <span>{user.username}</span>
+        {user.imageUrl && (
+          <img src={user.imageUrl} alt="Profile" className="user-avatar" />
+        )}
+        <button className="logout-btn" onClick={onLogout}>
+          Logout
+        </button>
+      </div>
+    </nav>
   );
 }
 
-export default AppNavbar;
+export default Navbar;

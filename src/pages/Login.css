@@ -1,33 +1,87 @@
-.login-page {
-  background: url("https://source.unsplash.com/random/?programming") no-repeat
-    center center fixed;
-  background-size: cover;
+/* מרכז את כל הדף */
+.auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background-color: #111; /* רקע כהה */
+  color: white;
 }
 
-.login-container {
-  width: 400px;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+/* הקופסה המרכזית */
+.auth-box {
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 350px;
   text-align: center;
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
 }
 
-.form-control {
-  margin-bottom: 15px;
+/* כותרת */
+.auth-box h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
-.btn-primary {
+/* קלטים */
+.auth-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-input {
   width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #333;
+  color: white;
+  font-size: 14px;
+}
+
+/* כפתור */
+.auth-btn {
+  width: 100%;
+  padding: 10px;
+  background: #ffcc00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
   margin-top: 10px;
 }
 
-.google-btn {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
+.auth-btn:hover {
+  background: #ffcc00;
+}
+
+/* קו הפרדה */
+.auth-divider {
+  margin: 15px 0;
+  font-size: 12px;
+  color: gray;
+}
+
+/* טקסט תחתון */
+.auth-footer {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.auth-footer a {
+  color: #ffcc00;
+  text-decoration: none;
+}
+
+.terms-text {
+  margin-top: 15px;
+  font-size: 12px;
+  color: gray;
+}
+
+.terms-text a {
+  color: #ffcc00;
 }

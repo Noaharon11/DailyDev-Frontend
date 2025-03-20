@@ -1,52 +1,64 @@
-import { useRef } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { CredentialResponse } from "@react-oauth/google";
 import { loginUser, googleSignin } from "../services/user-service";
 import Alert from "../components/Alert";
-import { CredentialResponse } from "@react-oauth/google";
 
-export function useLogin() {
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+export const useLogin = () => {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ Login with Email & Password
-  const handleLogin = async () => {
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
+  const login = useCallback(
+    async (email: string, password: string) => {
+      setLoading(true);
+      setError(null);
 
-    if (!email || !password) {
-      Alert("Please fill out all fields.", "error");
-      return;
-    }
+      try {
+        const user = await loginUser(email, password);
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/dashboard");
+      } catch (err: unknown) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Login failed";
+        setError(errorMessage);
+        Alert(errorMessage, "error");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [navigate]
+  );
 
-    try {
-      const user = await loginUser(email, password); // ✅ קריאה לשרת
-      localStorage.setItem("user", JSON.stringify(user)); // ✅ שמירת משתמש מחובר
-      Alert("Login successful!", "success");
-      navigate("/dashboard");
-    } catch {
-      Alert("Invalid email or password.", "error");
-    }
-  };
+  const googleLogin = useCallback(
+    async (credentialResponse: CredentialResponse) => {
+      setLoading(true);
+      setError(null);
 
-  // ✅ Google Login
-  const handleGoogleLoginSuccess = async (
-    credentialResponse: CredentialResponse
-  ) => {
-    try {
-      const user = await googleSignin(credentialResponse); // ✅ קריאה לשרת
-      localStorage.setItem("user", JSON.stringify(user)); // ✅ שמירת משתמש מחובר
-      Alert("Google Login successful!", "success");
-      navigate("/dashboard");
-    } catch {
-      Alert("Google login failed.", "error");
-    }
-  };
+      try {
+        if (!credentialResponse.credential) {
+          throw new Error(
+            "Google authentication failed. No credential received."
+          );
+        }
 
-  return {
-    emailRef,
-    passwordRef,
-    handleLogin,
-    handleGoogleLoginSuccess,
-  };
-}
+        const user = await googleSignin({
+          credential: credentialResponse.credential,
+        });
+
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/dashboard");
+      } catch (err: unknown) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Google login failed";
+        setError(errorMessage);
+        Alert(errorMessage, "error");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [navigate]
+  );
+
+  return { login, googleLogin, error, loading };
+};

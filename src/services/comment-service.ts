@@ -1,72 +1,40 @@
 import apiClient from "./api-client";
-import { IComment } from "../types";
+import { IComment } from "../types/index";
 
-// Fetch comments for a post
+// Fetch comments for a specific post
 export const fetchCommentsByPost = async (
   postId: string
 ): Promise<IComment[]> => {
-  try {
-    const response = await apiClient.get<IComment[]>(
-      `/posts/${postId}/comments`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Failed to fetch comments:", error);
-    throw error;
-  }
+  const response = await apiClient.get<IComment[]>("/comments", {
+    params: { postId },
+  });
+  return response.data;
 };
 
-// Add a new comment
+// Create a new comment
 export const addComment = async (
   postId: string,
   content: string
 ): Promise<IComment> => {
-  try {
-    const response = await apiClient.post<IComment>(
-      `/posts/${postId}/comments`,
-      {
-        content,
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Failed to add comment:", error);
-    throw error;
-  }
+  const response = await apiClient.post<IComment>("/comments", {
+    postId,
+    content,
+  });
+  return response.data;
 };
 
-// Like a comment
-export const likeComment = async (commentId: string): Promise<IComment> => {
-  try {
-    const response = await apiClient.post<IComment>(
-      `/comments/${commentId}/like`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Failed to like comment:", error);
-    throw error;
-  }
-};
-
-// Unlike a comment
-export const unlikeComment = async (commentId: string): Promise<IComment> => {
-  try {
-    const response = await apiClient.post<IComment>(
-      `/comments/${commentId}/unlike`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Failed to unlike comment:", error);
-    throw error;
-  }
+// Update an existing comment
+export const updateComment = async (
+  commentId: string,
+  content: string
+): Promise<IComment> => {
+  const response = await apiClient.put<IComment>(`/comments/${commentId}`, {
+    content,
+  });
+  return response.data;
 };
 
 // Delete a comment
 export const deleteComment = async (commentId: string): Promise<void> => {
-  try {
-    await apiClient.delete(`/comments/${commentId}`);
-  } catch (error) {
-    console.error("Failed to delete comment:", error);
-    throw error;
-  }
+  await apiClient.delete(`/comments/${commentId}`);
 };

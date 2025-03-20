@@ -1,9 +1,10 @@
+// types/index.ts
+
 export interface IUser {
   _id: string;
-  username: string;
+  username?: string;
   email: string;
-  password?: string;
-  imgUrl?: string;
+  imageUrl?: string;
   bio?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -11,27 +12,28 @@ export interface IUser {
 
 export interface IPost {
   _id: string;
-  owner: string;
+  author: IUser | string;
   content: string;
-  image?: string;
-  likes: number;
-  commentsCount: number;
+  imageUrl?: string;
+  likes: (string | IUser)[];
+  commentsCount?: number;
   createdAt?: string;
   updatedAt?: string;
 }
 
 export interface IComment {
   _id: string;
-  owner: string;
+  ownerId: string;
   postId: string;
   content: string;
-  likes: number;
+  likes: string[];
   createdAt?: string;
   updatedAt?: string;
 }
 
 export interface AuthResponse {
-  user: IUser;
+  _id: string;
+  email: string;
   accessToken: string;
   refreshToken: string;
 }

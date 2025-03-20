@@ -1,0 +1,26 @@
+{
+  "posts": [
+    {
+      "_id": "1",
+      "author": {
+        "username": "JohnDoe",
+        "imgUrl": "https://via.placeholder.com/40"
+      },
+      "content": "This is a test post!",
+      "imageUrl": "https://via.placeholder.com/500",
+      "likes": [],
+      "commentsCount": 3
+    },
+    {
+      "_id": "2",
+      "author": {
+        "username": "JaneDoe",
+        "imgUrl": "https://via.placeholder.com/40"
+      },
+      "content": "Another amazing post!",
+      "imageUrl": "",
+      "likes": ["user1"],
+      "commentsCount": 5
+    }
+  ]
+}

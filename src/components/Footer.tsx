@@ -1,66 +1,65 @@
-import { Link } from "react-router-dom";
+import React from "react";
 import "./Footer.css";
 
-function Footer() {
-  console.log("Footer loaded");
+const Footer = () => {
   return (
     <footer className="footer">
-      <div className="footer-content">
-        <div className="footer-section about">
+      <div className="footer-container">
+        <div className="footer-section">
           <h2>DailyDev</h2>
-          <p>Share your projects, collaborate, and grow together.</p>
-          <p>📍 Tel Aviv, Israel</p>
-          <p>📧 contact@dailydev.com</p>
+          <p>
+            Share your coding journey, learn from others, and grow together.
+          </p>
         </div>
-
-        <div className="footer-section links">
-          <h3>Navigation</h3>
+        <div className="footer-section">
+          <h3>Quick Links</h3>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <a href="/dashboard">Dashboard</a>
             </li>
             <li>
-              <Link to="/dashboard">Dashboard</Link>
+              <a href="/profile">Profile</a>
             </li>
             <li>
-              <Link to="/profile">Profile</Link>
+              <a href="/about">About Us</a>
+            </li>
+            <li>
+              <a href="/contact">Contact</a>
             </li>
           </ul>
         </div>
-
+        <div className="footer-section">
+          <h3>Community</h3>
+          <ul>
+            <li>
+              <a href="/guidelines">Guidelines</a>
+            </li>
+            <li>
+              <a href="/faq">FAQ</a>
+            </li>
+            <li>
+              <a href="https://github.com">GitHub</a>
+            </li>
+          </ul>
+        </div>
         <div className="footer-section social">
-          <h3>Follow Us</h3>
-          <div className="social-icons">
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              🐦 Twitter
-            </a>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              💻 GitHub
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              🔗 LinkedIn
-            </a>
-          </div>
+          <h3>Connect With Us</h3>
+          <a href="#">
+            <i className="fab fa-twitter"></i>
+          </a>
+          <a href="#">
+            <i className="fab fa-linkedin"></i>
+          </a>
+          <a href="#">
+            <i className="fab fa-github"></i>
+          </a>
         </div>
       </div>
-
-      <div className="footer-bottom">
-        <p>© 2025 DailyDev. All rights reserved.</p>
-      </div>
+      <p className="footer-bottom">
+        &copy; 2025 DailyDev. All rights reserved.
+      </p>
     </footer>
   );
-}
+};
 
 export default Footer;
