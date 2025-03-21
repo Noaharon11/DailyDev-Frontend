@@ -37,7 +37,7 @@ function Layout({
   const location = useLocation();
 
   // ✅ Define where Navbar and Footer should be hidden
-  const hideNavbar = ["/", "/login", "/register"].includes(location.pathname);
+  const hideNavbar = ["/", "/register"].includes(location.pathname);
   const hideFooter = ["/"].includes(location.pathname); // Footer is only hidden in LandingPage
 
   return (

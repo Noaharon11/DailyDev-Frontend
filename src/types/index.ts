@@ -38,9 +38,12 @@ export interface AuthResponse {
   refreshToken: string;
 }
 
-export interface ErrorResponse {
-  message: string;
-  status: number;
+export interface AuthResponse {
+  _id: string;
+  email: string;
+  username: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface ISearchResult {
