@@ -17,6 +17,7 @@ export const useLogin = () => {
 
       try {
         const authResponse: AuthResponse = await loginUser(email, password);
+        console.log("🔍 Login response:", authResponse);
 
         //  Extract user and tokens correctly
         const { user, accessToken, refreshToken } = authResponse;

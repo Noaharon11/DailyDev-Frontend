@@ -42,3 +42,10 @@ export interface ErrorResponse {
   message: string;
   status: number;
 }
+
+export interface ISearchResult {
+  id: string;
+  name: string;
+  type: "post" | "user";
+  link: string;
+}

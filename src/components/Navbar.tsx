@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import logo from "../assets/logo.png";
 
 function Navbar({
   user,
@@ -10,15 +11,29 @@ function Navbar({
 }) {
   return (
     <nav className="navbar">
+      {/* לוגו */}
       <Link to="/dashboard" className="navbar-logo">
-        🚀 DailyDev
+        <img src={logo} alt="DailyDev Logo" className="logo-img" />
       </Link>
-      <div className="navbar-links">
-        <Link to="/feed">Feed</Link>
-        <Link to="/challenges">Challenges</Link>
-        <Link to="/leaderboard">Leaderboard</Link>
-        <Link to="/community">Community</Link>
+
+      {/* תיבת חיפוש */}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search users or posts..."
+          className="search-input"
+        />
+        {/* כאן נוכל להוסיף תוצאות חיפוש דינאמיות */}
       </div>
+
+      {/* ניווט */}
+      <div className="navbar-links">
+        <Link to="/dashboard">Home</Link>
+        <Link to="/profile">Profile</Link>
+        <Link to="/challenges">Challenge</Link>
+      </div>
+
+      {/* אזור משתמש */}
       <div className="navbar-user">
         <span>{user.username}</span>
         {user.imageUrl && (

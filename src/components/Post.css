@@ -45,11 +45,29 @@
   margin-top: 10px;
 }
 
-.like-btn,
-.comment-btn {
-  background: transparent;
+.like-btn {
+  background: none;
   border: none;
-  color: #ffcc00;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
+  color: white;
+  transition: 0.3s;
+}
+
+.like-btn.liked {
+  color: red;
+  transform: scale(1.1);
+}
+
+.comment-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+  transition: 0.3s;
+}
+
+.comment-btn:hover {
+  color: #ffcc00;
 }

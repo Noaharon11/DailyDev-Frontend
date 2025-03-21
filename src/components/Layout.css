@@ -1,37 +1,38 @@
-html,
-body,
-#root {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  direction: rtl;
-}
-
+/* ✅ עיצוב המבנה הראשי */
 .layout {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: auto; /* מבטיח שהעמוד יתפוס לפחות את כל הגובה */
+  background-color: #0d0d0d;
+  color: white;
 }
 
+/* ✅ התוכן הראשי - תופס את כל הגובה הפנוי */
 .main-content {
-  flex: 1;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  flex-grow: 1; /* מבטיח שהתוכן יתפוס את כל המקום האפשרי */
   padding: 20px;
-  padding-top: 80px; /* Height of the Navbar */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* ✅ עיצוב ה- Footer - תמיד בתחתית */
 .footer {
-  margin-top: auto;
   width: 100%;
-  background-color: #f8f9fa;
+  background-color: black;
+  color: white;
   padding: 20px 0;
   text-align: center;
+  position: relative;
+  bottom: 0;
 }
 
-.footer p {
+/* ✅ התאמות נוספות */
+html,
+body {
+  height: 100%; /* מבטיח שהעמוד כולו יתפוס את כל הגובה */
   margin: 0;
-  color: #6c757d;
+  padding: 0;
 }

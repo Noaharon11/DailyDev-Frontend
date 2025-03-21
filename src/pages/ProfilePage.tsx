@@ -1,75 +1,53 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { fetchPostsByUser } from "../services/posts-service";
-import { getUserProfile } from "../services/user-service";
-import { IPost, IUser } from "../types";
+import { fetchUserProfile } from "../services/user-service";
+import { IUser, IPost } from "../types";
+import ProfileCard from "../components/ProfileCard";
 import Post from "../components/Post";
 import "./ProfilePage.css";
+import { fetchPostsByUser } from "../services/posts-service";
 
-const Profile = () => {
-  const { userId } = useParams<{ userId: string }>(); // לוקח את ה-id מה-URL
+const ProfilePage: React.FC = () => {
+  const { userId } = useParams();
   const [user, setUser] = useState<IUser | null>(null);
   const [posts, setPosts] = useState<IPost[]>([]);
-  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        // להביא את פרטי המשתמש מהשרת
-        const userProfile = await getUserProfile();
-        setCurrentUser(userProfile);
-
-        if (userId) {
-          // אם יש userId, להביא את הפרופיל של אותו משתמש
-          const response = await fetch(`/users/${userId}`);
-          const userData: IUser = await response.json();
-          setUser(userData);
-
-          // להביא את כל הפוסטים של המשתמש הזה
-          const fetchedPosts = await fetchPostsByUser(userId);
-          setPosts(fetchedPosts);
-        }
-      } catch {
-        console.error("Failed to load user profile");
+        if (!userId) return;
+        const userProfile = await fetchUserProfile(userId);
+        const userPosts = await fetchPostsByUser(userId);
+        setUser(userProfile);
+        setPosts(userPosts);
+      } catch (error) {
+        console.error("Error loading profile:", error);
       } finally {
         setLoading(false);
       }
     };
-
     loadProfile();
   }, [userId]);
 
-  if (loading) return <p>Loading profile...</p>;
-
-  if (!user) return <p>User not found</p>;
+  if (loading) return <p>Loading...</p>;
+  if (!user) return <p>User not found.</p>;
 
   return (
-    <div className="profile-container">
-      <div className="profile-header">
-        <img
-          src={user.imageUrl || "/default_avatar.png"}
-          alt="User Avatar"
-          className="profile-avatar"
-        />
-        <h2>{user.username}</h2>
-        {currentUser?._id === user._id && (
-          <button className="edit-profile-btn">Edit Profile</button>
-        )}
-      </div>
-
-      <h3>📌 {user.username}'s Posts</h3>
+    <div className="profile-page">
+      <ProfileCard user={user} isCurrentUser={false} />
+      <h2>{user.username}'s Posts</h2>
       <div className="posts-section">
-        {posts.length === 0 ? (
-          <p>No posts yet.</p>
-        ) : (
+        {posts.length > 0 ? (
           posts.map((post) => (
-            <Post key={post._id} {...post} currentUser={currentUser} />
+            <Post key={post._id} post={post} currentUser={user} />
           ))
+        ) : (
+          <p>No posts yet.</p>
         )}
       </div>
     </div>
   );
 };
 
-export default Profile;
+export default ProfilePage;

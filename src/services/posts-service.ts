@@ -1,7 +1,7 @@
 import apiClient from "./api-client";
 import { IPost } from "../types/index";
 
-// ✅ Fetch all posts (supports pagination)
+// Fetch all posts (supports pagination)
 export const fetchAllPosts = async (page: number = 1): Promise<IPost[]> => {
   try {
     const response = await apiClient.get<IPost[]>("/posts", {
@@ -14,7 +14,7 @@ export const fetchAllPosts = async (page: number = 1): Promise<IPost[]> => {
   }
 };
 
-// ✅ Fetch a single post by ID
+// Fetch a single post by ID
 export const fetchPostById = async (postId: string): Promise<IPost> => {
   try {
     const response = await apiClient.get<IPost>(`/posts/${postId}`);
@@ -25,7 +25,7 @@ export const fetchPostById = async (postId: string): Promise<IPost> => {
   }
 };
 
-// ✅ Create a new post (supports text & image upload)
+// Create a new post (supports text & image upload)
 export const createPost = async (
   content: string,
   image?: File
@@ -45,7 +45,7 @@ export const createPost = async (
   }
 };
 
-// ✅ Update an existing post (supports updating text & image)
+// Update an existing post (supports updating text & image)
 export const updatePost = async (
   postId: string,
   content?: string,
@@ -66,7 +66,7 @@ export const updatePost = async (
   }
 };
 
-// ✅ Like or unlike a post (toggle)
+// Like or unlike a post (toggle)
 export const toggleLikePost = async (
   postId: string
 ): Promise<{ likes: (string | IPost)[] }> => {
@@ -81,7 +81,7 @@ export const toggleLikePost = async (
   }
 };
 
-// ✅ Delete a post
+// Delete a post
 export const deletePost = async (postId: string): Promise<void> => {
   try {
     await apiClient.delete(`/posts/${postId}`);
@@ -91,7 +91,7 @@ export const deletePost = async (postId: string): Promise<void> => {
   }
 };
 
-// ✅ Fetch all posts by a specific user
+//  Fetch all posts by a specific user
 export const fetchPostsByUser = async (userId: string): Promise<IPost[]> => {
   try {
     const response = await apiClient.get<IPost[]>(`/posts/user/${userId}`);

@@ -2,60 +2,62 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #222;
+  background-color: black;
   padding: 10px 20px;
   color: white;
+  height: 60px;
+  box-shadow: 0px 4px 10px rgba(255, 204, 0, 0.3);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
-.navbar-left {
-  display: flex;
-  align-items: center;
+.navbar-logo img {
+  height: 40px;
 }
 
-.navbar-logo {
-  font-size: 1.5rem;
-  font-weight: bold;
+.search-container {
+  flex-grow: 1;
+  max-width: 400px;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: none;
+  background: #222;
   color: white;
-  text-decoration: none;
 }
 
 .navbar-links {
   display: flex;
-  gap: 25px; /* ✅ ריווח תקין בין הכפתורים */
+  gap: 20px;
 }
 
 .navbar-links a {
   color: white;
   text-decoration: none;
   font-size: 1rem;
-  font-weight: bold;
 }
 
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.user-info {
+.navbar-user {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.profile-pic {
-  width: 40px;
-  height: 40px;
+.user-avatar {
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  border: 2px solid #ffcc00; /* ✅ מסגרת יפה */
+  border: 2px solid #ffcc00;
 }
 
-.username {
-  font-weight: bold;
-}
-
-.logout-btn,
-.login-btn {
+.logout-btn {
   background-color: #ffcc00;
   color: black;
   border: none;
@@ -65,7 +67,6 @@
   font-weight: bold;
 }
 
-.logout-btn:hover,
-.login-btn:hover {
+.logout-btn:hover {
   background-color: #ffaa00;
 }

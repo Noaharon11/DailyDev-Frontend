@@ -13,28 +13,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user, isCurrentUser }) => {
       <img
         src={user.imageUrl || "/default-avatar.png"}
         alt="Profile"
-        className="profile-img"
+        className="profile-avatar"
       />
-      <h2 className="profile-name">{user.username}</h2>
-      <p className="profile-bio">
-        {user.bio || "No bio yet. Add something about yourself!"}
-      </p>
-
-      <div className="profile-stats">
-        <div>
-          <span className="stat-number">12</span>
-          <span className="stat-label">Posts</span>
-        </div>
-        <div>
-          <span className="stat-number">256</span>
-          <span className="stat-label">Likes</span>
-        </div>
-        <div>
-          <span className="stat-number">8</span>
-          <span className="stat-label">Challenges</span>
-        </div>
-      </div>
-
+      <h3>{user.username}</h3>
+      {user.bio && <p className="profile-bio">{user.bio}</p>}
       {isCurrentUser && (
         <button className="edit-profile-btn">Edit Profile</button>
       )}

@@ -1,71 +1,72 @@
-/* מרכז את כל הדף */
+/* Center the page */
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #111; /* רקע כהה */
+  background-color: #111; /* Dark background */
   color: white;
 }
 
-/* הקופסה המרכזית */
+/* Main authentication box */
 .auth-box {
   background: #1a1a1a;
   padding: 2rem;
-  border-radius: 10px;
+  border-radius: 12px; /* More rounded corners */
   width: 350px;
   text-align: center;
-  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+  box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.15); /* Slightly stronger shadow */
 }
 
-/* כותרת */
+/* Title */
 .auth-box h2 {
   font-size: 24px;
   margin-bottom: 20px;
 }
 
-/* קלטים */
+/* Input fields */
 .auth-inputs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .auth-input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px; /* More rounded */
   background: #333;
   color: white;
-  font-size: 14px;
+  font-size: 16px;
 }
 
-/* כפתור */
+/* Button */
 .auth-btn {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background: #ffcc00;
-  color: white;
+  color: black; /* Better contrast */
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 12px; /* More rounded */
   font-size: 16px;
-  margin-top: 10px;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background 0.3s ease-in-out;
 }
 
 .auth-btn:hover {
-  background: #ffcc00;
+  background: #e6b800;
 }
 
-/* קו הפרדה */
+/* Divider */
 .auth-divider {
   margin: 15px 0;
-  font-size: 12px;
+  font-size: 14px;
   color: gray;
 }
 
-/* טקסט תחתון */
+/* Footer text */
 .auth-footer {
   margin-top: 10px;
   font-size: 14px;
@@ -74,6 +75,10 @@
 .auth-footer a {
   color: #ffcc00;
   text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
 }
 
 .terms-text {

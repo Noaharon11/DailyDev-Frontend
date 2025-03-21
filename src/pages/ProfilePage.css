@@ -1,38 +1,40 @@
-.profile-container {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
-  color: white;
-}
-
-.profile-header {
+.profile-page {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
+  background: #0d0d0d;
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
 }
 
-.profile-pic {
+.profile-posts-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.profile-card {
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+.profile-image {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  object-fit: cover;
+  margin-bottom: 10px;
 }
 
-.profile-actions {
-  margin-left: auto;
-}
-
-.edit-btn,
-.save-btn {
+.edit-profile-btn {
   background: #ffcc00;
   border: none;
-  padding: 8px 15px;
+  padding: 10px;
+  font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: bold;
-}
-
-h2 {
-  margin-top: 20px;
 }

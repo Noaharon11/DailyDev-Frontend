@@ -5,30 +5,44 @@
   background: #0d0d0d;
   color: white;
   min-height: 100vh;
+  padding: 20px;
 }
 
 .dashboard-content {
   display: flex;
-  width: 80%;
-  margin-top: 20px;
+  width: 90%;
+  max-width: 1200px;
   gap: 20px;
 }
 
-.profile-card {
+/* Sidebar for profile */
+.profile-sidebar {
   flex: 0 0 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
+/* Main feed section */
 .main-feed {
   flex: 1;
   max-width: 800px;
 }
 
+.dashboard-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Post box */
 .post-box {
   background: #1a1a1a;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(255, 204, 0, 0.3);
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .post-box input {
@@ -49,11 +63,12 @@
 }
 
 .daily-challenge {
+  flex: 0 0 250px;
   background: #222;
   padding: 15px;
   border-radius: 10px;
-  margin-top: 20px;
   text-align: center;
+  height: fit-content;
 }
 
 .daily-challenge button {

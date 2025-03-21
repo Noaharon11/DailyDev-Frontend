@@ -4,7 +4,7 @@ interface UploadResponse {
   url: string;
 }
 
-// ✅ Upload a file (image) and return the URL
+//  Upload a file (image) and return the URL
 export const uploadFile = async (file: File): Promise<string> => {
   try {
     // Validate file type
