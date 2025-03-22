@@ -39,11 +39,11 @@ export interface AuthResponse {
 }
 
 export interface AuthResponse {
+  accessToken: string;
+  refreshToken: string;
   _id: string;
   email: string;
   username: string;
-  accessToken: string;
-  refreshToken: string;
 }
 
 export interface ISearchResult {

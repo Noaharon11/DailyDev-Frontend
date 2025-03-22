@@ -26,18 +26,21 @@ export const fetchPostById = async (postId: string): Promise<IPost> => {
 };
 
 // Create a new post (supports text & image upload)
-export const createPost = async (
-  content: string,
-  image?: File
-): Promise<IPost> => {
+export const createPost = async (content: string): Promise<IPost> => {
   try {
-    const formData = new FormData();
-    formData.append("content", content);
-    if (image) formData.append("file", image);
-
-    const response = await apiClient.post<IPost>("/posts", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const response = await apiClient.post<IPost>(
+      "/posts",
+      {
+        title: content, // 🔥 מוסיפים title כדי שהבק אנד לא יתלונן
+        content: content,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // חובה אם יש authMiddleware
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error creating post:", error);

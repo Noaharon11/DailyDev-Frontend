@@ -1,41 +1,19 @@
-import { useEffect, useState } from "react";
-import { fetchPostsByUser } from "../services/posts-service";
+import React from "react";
+import { IPost } from "../types/index";
 import Post from "./Post";
-import { IPost } from "../types";
+import "./UserPostsList.css";
 
 interface UserPostsListProps {
-  userId: string;
+  posts: IPost[];
 }
 
-const UserPostsList: React.FC<UserPostsListProps> = ({ userId }) => {
-  const [posts, setPosts] = useState<IPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const loadPosts = async () => {
-      try {
-        const userPosts = await fetchPostsByUser(userId);
-        setPosts(userPosts);
-      } catch {
-        setError("Failed to load user's posts.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadPosts();
-  }, [userId]);
-
+const UserPostsList: React.FC<UserPostsListProps> = ({ posts }) => {
   return (
     <div className="user-posts-list">
-      {loading ? (
-        <p>Loading posts...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : posts.length === 0 ? (
-        <p>No posts yet.</p>
+      {posts.length > 0 ? (
+        posts.map((post) => <Post key={post._id} post={post} />)
       ) : (
-        posts.map((post) => <Post key={post._id} {...post} />)
+        <p className="no-posts">No posts yet.</p>
       )}
     </div>
   );

@@ -1,51 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchUserProfile } from "../services/user-service";
+import { fetchPostsByUser } from "../services/posts-service";
 import { IUser, IPost } from "../types";
 import ProfileCard from "../components/ProfileCard";
-import Post from "../components/Post";
+import UserPostsList from "../components/UserPostsList";
 import "./ProfilePage.css";
-import { fetchPostsByUser } from "../services/posts-service";
 
 const ProfilePage: React.FC = () => {
   const { userId } = useParams();
   const [user, setUser] = useState<IUser | null>(null);
   const [posts, setPosts] = useState<IPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadProfile = async () => {
+    const fetchUserData = async () => {
       try {
-        if (!userId) return;
-        const userProfile = await fetchUserProfile(userId);
-        const userPosts = await fetchPostsByUser(userId);
-        setUser(userProfile);
+        setLoading(true);
+        setError(null);
+
+        // שליפת נתוני המשתמש
+        const userData = await fetch(`/api/users/${userId}`).then((res) =>
+          res.json()
+        );
+        setUser(userData);
+
+        // שליפת הפוסטים של המשתמש
+        const userPosts = await fetchPostsByUser(userId!);
         setPosts(userPosts);
-      } catch (error) {
-        console.error("Error loading profile:", error);
+      } catch (err) {
+        setError("Failed to load user data.");
       } finally {
         setLoading(false);
       }
     };
-    loadProfile();
+
+    if (userId) fetchUserData();
   }, [userId]);
 
   if (loading) return <p>Loading...</p>;
+  if (error) return <p className="error">{error}</p>;
   if (!user) return <p>User not found.</p>;
 
   return (
     <div className="profile-page">
-      <ProfileCard user={user} isCurrentUser={false} />
-      <h2>{user.username}'s Posts</h2>
-      <div className="posts-section">
-        {posts.length > 0 ? (
-          posts.map((post) => (
-            <Post key={post._id} post={post} currentUser={user} />
-          ))
-        ) : (
-          <p>No posts yet.</p>
-        )}
+      {/* כרטיס משתמש */}
+      <div className="profile-header">
+        <img
+          src={user.imageUrl || "/photo.png"}
+          alt="Profile"
+          className="profile-image"
+        />
+        <h1 className="profile-name">{user.username}</h1>
+        {user.bio && <p className="profile-bio">{user.bio}</p>}
+        <p className="profile-email">{user.email}</p>
       </div>
+
+      {/* רשימת הפוסטים */}
+      <h2 className="posts-title">{user.username}'s Posts</h2>
+      <UserPostsList posts={posts} />
     </div>
   );
 };

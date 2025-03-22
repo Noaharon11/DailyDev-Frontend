@@ -3,39 +3,15 @@
 // import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 // import { loginUser, googleSignin } from "../services/user-service";
 // import Alert from "../components/Alert";
-// import { AuthResponse } from "../types/index";
+// import { IUser } from "../types/index";
 // import "./Login.css";
 
-// function Login({ setUser }: { setUser: (user: AuthResponse["user"]) => void }) {
+// function Login({ setUser }: { setUser: (user: IUser) => void }) {
 //   const emailRef = useRef<HTMLInputElement>(null);
 //   const passwordRef = useRef<HTMLInputElement>(null);
 //   const navigate = useNavigate();
 
-//   //Handle regular login
-//   // const handleLogin = async () => {
-//   //   const email = emailRef.current?.value?.trim();
-//   //   const password = passwordRef.current?.value?.trim();
-
-//   //   if (!email || !password) {
-//   //     Alert("Please fill out all fields.", "error");
-//   //     return;
-//   //   }
-
-//   //   try {
-//   //     const authResponse: AuthResponse = await loginUser(email, password);
-
-//   //     // Extract and store user
-//   //     console.log("Auth Response:", authResponse);
-//   //     setUser(authResponse.user);
-//   //     localStorage.setItem("user", JSON.stringify(authResponse.user));
-
-//   //     Alert("Login successful!", "success");
-//   //     navigate("/dashboard");
-//   //   } catch {
-//   //     Alert("Invalid email or password.", "error");
-//   //   }
-//   // };
-
+//   // ✅ Login with email + password
 //   const handleLogin = async () => {
 //     const email = emailRef.current?.value?.trim();
 //     const password = passwordRef.current?.value?.trim();
@@ -46,73 +22,58 @@
 //     }
 
 //     try {
-//       console.log("Trying to login with:", email, password);
-//       const authResponse: AuthResponse = await loginUser(email, password);
-//       console.log("Auth Response:", authResponse);
+//       console.log("🔍 Trying to login with:", email, password);
+//       const authResponse = await loginUser(email, password);
 
-//       if (!authResponse || !authResponse.user || !authResponse.accessToken) {
-//         throw new Error("Invalid response from server");
-//       }
+//       const user: IUser = {
+//         _id: authResponse._id,
+//         email: authResponse.email,
+//         username: authResponse.username,
+//       };
 
-//       setUser(authResponse.user);
-
-//       // 🔥 **שומרים את ה־token ב־localStorage**
 //       localStorage.setItem("token", authResponse.accessToken);
 //       localStorage.setItem("refreshToken", authResponse.refreshToken);
-//       localStorage.setItem("user", JSON.stringify(authResponse.user));
+//       localStorage.setItem("user", JSON.stringify(user));
 
+//       setUser(user);
 //       Alert("Login successful!", "success");
 //       navigate("/dashboard");
 //     } catch (error) {
-//       console.error("Login error:", error);
-//       Alert("Invalid email or password.", "error");
+//       const errorMessage =
+//         error instanceof Error ? error.message : "An unknown error occurred.";
+//       console.error("❌ Login error:", errorMessage);
+//       Alert(errorMessage, "error");
 //     }
 //   };
 
-//   // const handleLogin = async () => {
-//   //   const email = emailRef.current?.value;
-//   //   const password = passwordRef.current?.value;
-
-//   //   if (!email || !password) {
-//   //     Alert("Please fill out all fields.", "error");
-//   //     return;
-//   //   }
-
-//   //   try {
-//   //     const user = await loginUser(email, password);
-//   //     if (!user) throw new Error("Invalid response from server");
-
-//   //
-//   //     localStorage.setItem("user", JSON.stringify(user));
-//   //     setUser(user);
-//   //     Alert("Login successful!", "success");
-//   //     navigate("/dashboard");
-//   //   } catch {
-//   //     Alert("Invalid email or password.", "error");
-//   //   }
-//   // };
-
-//   //  Handle Google login
+//   // ✅ Login with Google
 //   const handleGoogleLoginSuccess = async (
 //     credentialResponse: CredentialResponse
 //   ) => {
 //     try {
-//       if (!credentialResponse.credential) {
-//         throw new Error("Google credential is missing.");
-//       }
+//       const credential = credentialResponse.credential;
+//       if (!credential) throw new Error("Google credential is missing.");
 
-//       const authResponse: AuthResponse = await googleSignin({
-//         credential: credentialResponse.credential,
-//       });
+//       const authResponse = await googleSignin({ credential });
 
-//       //  Extract and store user
-//       setUser(authResponse.user);
-//       localStorage.setItem("user", JSON.stringify(authResponse.user));
+//       const user: IUser = {
+//         _id: authResponse._id,
+//         email: authResponse.email,
+//         username: authResponse.username,
+//       };
 
+//       localStorage.setItem("token", authResponse.accessToken);
+//       localStorage.setItem("refreshToken", authResponse.refreshToken);
+//       localStorage.setItem("user", JSON.stringify(user));
+
+//       setUser(user);
 //       Alert("Google Login successful!", "success");
 //       navigate("/dashboard");
-//     } catch {
-//       Alert("Google login failed.", "error");
+//     } catch (error) {
+//       const errorMessage =
+//         error instanceof Error ? error.message : "An unknown error occurred.";
+//       console.error("❌ Google login failed:", errorMessage);
+//       Alert(errorMessage, "error");
 //     }
 //   };
 
@@ -153,136 +114,57 @@
 // export default Login;
 
 import { useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-import { loginUser, googleSignin } from "../services/user-service";
-import Alert from "../components/Alert";
-import { AuthResponse } from "../types/index";
+import { useLogin } from "../hooks/useLogin";
+import { IUser } from "../types";
 import "./Login.css";
+import { error } from "console";
 
-function Login({ setUser }: { setUser: (user: AuthResponse["user"]) => void }) {
+function Login({ setUser }: { setUser: (user: IUser) => void }) {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
-
-  // 🔥 Handle regular login
-  // const handleLogin = async () => {
-  //   const email = emailRef.current?.value?.trim();
-  //   const password = passwordRef.current?.value?.trim();
-
-  //   if (!email || !password) {
-  //     Alert("Please fill out all fields.", "error");
-  //     return;
-  //   }
-
-  //   try {
-  //     console.log("🔍 Trying to login with:", email, password);
-  //     const authResponse: AuthResponse = await loginUser(email, password);
-  //     console.log("✅ Auth Response:", authResponse);
-
-  //     if (
-  //       !authResponse ||
-  //       !authResponse.user ||
-  //       !authResponse.accessToken ||
-  //       !authResponse.refreshToken
-  //     ) {
-  //       throw new Error("Invalid response from server");
-  //     }
-
-  //     // 🔥 Save tokens and user data to localStorage
-  //     localStorage.setItem("token", authResponse.accessToken);
-  //     localStorage.setItem("refreshToken", authResponse.refreshToken);
-  //     localStorage.setItem("user", JSON.stringify(authResponse.user));
-
-  //     // 🔥 Update React state
-  //     setUser(authResponse.user);
-
-  //     Alert("Login successful!", "success");
-  //     navigate("/dashboard");
-  //   } catch (error) {
-  //     console.error("❌ Login error:", error);
-  //     Alert("Invalid email or password.", "error");
-  //   }
-  // };
+  const { login, loginWithGoogle } = useLogin();
 
   const handleLogin = async () => {
     const email = emailRef.current?.value?.trim();
     const password = passwordRef.current?.value?.trim();
 
     if (!email || !password) {
-      Alert("Please fill out all fields.", "error");
+      alert("Please fill all fields.");
       return;
     }
 
-    try {
-      console.log("🔍 Trying to login with:", email, password);
-      const authResponse: AuthResponse = await loginUser(email, password);
-      console.log("✅ Auth Response:", authResponse);
-
-      if (
-        !authResponse ||
-        !authResponse.user ||
-        !authResponse.accessToken ||
-        !authResponse.refreshToken
-      ) {
-        throw new Error("Invalid response from server");
-      }
-
-      // 🔥 Save tokens and user data to localStorage
-      localStorage.setItem("token", authResponse.accessToken);
-      localStorage.setItem("refreshToken", authResponse.refreshToken);
-      localStorage.setItem("user", JSON.stringify(authResponse.user));
-
-      // 🔥 Update React state
-      setUser(authResponse.user);
-
-      Alert("Login successful!", "success");
-      navigate("/dashboard");
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred.";
-      console.error("❌ Login error:", errorMessage);
-      Alert(errorMessage, "error");
+    const result = await login(email, password);
+    if (result.success && result.user) {
+      setUser(result.user);
     }
   };
 
-  // 🔥 Handle Google login
+  // const handleGoogleLoginSuccess = async (
+  //   credentialResponse: CredentialResponse
+  // ) => {
+  //   const result = await loginWithGoogle(credentialResponse);
+  //   if (result.success && result.user) {
+  //     setUser(result.user);
+  //   }
+  // };
+
   const handleGoogleLoginSuccess = async (
     credentialResponse: CredentialResponse
   ) => {
-    try {
-      if (!credentialResponse.credential) {
-        throw new Error("Google credential is missing.");
-      }
+    console.log("🔐 Google credential response:", credentialResponse);
 
-      console.log("🔍 Google login attempt...");
-      const authResponse: AuthResponse = await googleSignin({
-        credential: credentialResponse.credential,
-      });
-      console.log("✅ Google Auth Response:", authResponse);
+    if (!credentialResponse.credential) {
+      alert("Missing Google credential.");
+      return;
+    }
 
-      if (
-        !authResponse ||
-        !authResponse.user ||
-        !authResponse.accessToken ||
-        !authResponse.refreshToken
-      ) {
-        throw new Error("Invalid response from server");
-      }
-
-      // 🔥 Save tokens and user data to localStorage
-      localStorage.setItem("token", authResponse.accessToken);
-      localStorage.setItem("refreshToken", authResponse.refreshToken);
-      localStorage.setItem("user", JSON.stringify(authResponse.user));
-
-      // 🔥 Update React state
-      setUser(authResponse.user);
-
-      Alert("Google Login successful!", "success");
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("❌ Google login failed:", error);
-      Alert("Google login failed.", "error");
+    const result = await loginWithGoogle(credentialResponse);
+    if (result.success && result.user) {
+      setUser(result.user);
+    } else {
+      alert("Google login failed.");
     }
   };
 
@@ -310,7 +192,7 @@ function Login({ setUser }: { setUser: (user: AuthResponse["user"]) => void }) {
         <div className="auth-divider">OR</div>
         <GoogleLogin
           onSuccess={handleGoogleLoginSuccess}
-          onError={() => Alert("Google login error.", "error")}
+          onError={() => alert("Google login failed.")}
         />
         <p className="auth-footer">
           Don’t have an account? <Link to="/register">Sign up</Link>
