@@ -1,15 +1,15 @@
-/* ✅ עיצוב המבנה הראשי */
+/* 
 .layout {
   display: flex;
   flex-direction: column;
-  min-height: auto; /* מבטיח שהעמוד יתפוס לפחות את כל הגובה */
+  min-height: auto;
   background-color: #0d0d0d;
   color: white;
 }
 
-/* ✅ התוכן הראשי - תופס את כל הגובה הפנוי */
+
 .main-content {
-  flex-grow: 1; /* מבטיח שהתוכן יתפוס את כל המקום האפשרי */
+  flex-grow: 1;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -18,7 +18,7 @@
   box-sizing: border-box;
 }
 
-/* ✅ עיצוב ה- Footer - תמיד בתחתית */
+
 .footer {
   width: 100%;
   background-color: black;
@@ -29,10 +29,44 @@
   bottom: 0;
 }
 
-/* ✅ התאמות נוספות */
+
 html,
 body {
-  height: 100%; /* מבטיח שהעמוד כולו יתפוס את כל הגובה */
+  height: 100%; 
   margin: 0;
   padding: 0;
+} */
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #0d0d0d;
+  color: white;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.footer {
+  width: 100%;
+  background-color: black;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
 }

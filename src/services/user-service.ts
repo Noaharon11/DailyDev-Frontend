@@ -360,7 +360,7 @@ export const registerUser = async (userData: {
   try {
     const response = await apiClient.post("/auth/register", userData);
 
-    const { _id, email, username } = response.data;
+    const { _id, email, username } = response.data as IUser;
     const user = { _id, email, username };
 
     // שומרת את המשתמש בלוקאל
@@ -451,12 +451,29 @@ export const logoutUser = async (): Promise<void> => {
   }
 };
 
+// services/user-service.ts
+
+// Fetch user profile by userId (sent via query param)
+// export const fetchUserProfile = async (userId: string): Promise<IUser> => {
+//   try {
+//     const response = await apiClient.get<IUser>("/users/profile", {
+//       params: { userId },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error(`Error fetching user profile for userId ${userId}:`, error);
+//     throw new Error("Failed to fetch user profile");
+//   }
+// };
+
 export const fetchUserProfile = async (userId: string): Promise<IUser> => {
   try {
-    const response = await apiClient.get<IUser>(`/users/${userId}`);
+    const response = await apiClient.get<IUser>("/user/getUserById", {
+      params: { userId },
+    });
     return response.data;
   } catch (error) {
-    console.error(`Failed to fetch user profile for ID: ${userId}`, error);
-    throw new Error("Failed to load user profile.");
+    console.error("Error fetching user profile:", error);
+    throw new Error("Failed to fetch user profile");
   }
 };

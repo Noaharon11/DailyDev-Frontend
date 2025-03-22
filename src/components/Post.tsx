@@ -1,10 +1,13 @@
-// import React, { useState, useEffect, ChangeEvent } from "react";
-// import { IPost, IUser, IComment } from "../types";
+// import React, { useState, useEffect } from "react";
+// import { IPost, IUser } from "../types";
+// import {
+//   toggleLikePost,
+//   deletePost,
+//   updatePost,
+// } from "../services/posts-service";
+// import { fetchUserProfile } from "../services/user-service";
 // import { useNavigate } from "react-router-dom";
-// import { fetchCommentsByPost, addComment } from "../services/comment-service";
-// import { fetchUserProfile } from "../services/user-service";
-// import { toggleLikePost, createPost } from "../services/posts-service";
-// import Alert from "../components/Alert";
+// import Alert from "./Alert";
 // import "./Post.css";
 
 // interface PostProps {
@@ -13,289 +16,141 @@
 // }
 
 // const Post: React.FC<PostProps> = ({ post, currentUser }) => {
-//   //const navigate = useNavigate();
-//   const { _id, author, content, imageUrl, likes } = post;
-//   const isOwner =
-//     currentUser?._id === (typeof author === "string" ? author : author._id);
+//   const { _id, content, imageUrl, createdAt, updatedAt } = post;
+//   const navigate = useNavigate();
 
-//   const [comments, setComments] = useState<IComment[]>([]);
-//   const [userDetails, setUserDetails] = useState<{ [key: string]: IUser }>({});
-//   const [newContent, setNewContent] = useState("");
-//   const [newImage, setNewImage] = useState<File | null>(null);
-
-//   useEffect(() => {
-//     const loadComments = async () => {
-//       try {
-//         const fetchedComments = await fetchCommentsByPost(_id);
-//         setComments(fetchedComments);
-
-//         const userFetches = fetchedComments.map(async (comment) => {
-//           if (!(comment.ownerId in userDetails)) {
-//             const user = await fetchUserProfile(comment.ownerId);
-//             return { [comment.ownerId]: user };
-//           }
-//           return null;
-//         });
-
-//         const usersArray = await Promise.all(userFetches);
-//         const usersObject = usersArray.reduce((acc, user) => {
-//           if (user) return { ...acc, ...user };
-//           return acc;
-//         }, {});
-
-//         setUserDetails((prev) => ({ ...prev, ...usersObject }));
-//       } catch (error) {
-//         console.error("Error loading comments:", error);
-//       }
-//     };
-
-//     loadComments();
-//   }, [_id]);
-
-//   const handleLike = async () => {
-//     try {
-//       const { likes } = await toggleLikePost(_id);
-//     } catch {
-//       Alert("Failed to like post", "error");
-//     }
-//   };
-
-//   const handlePostSubmit = async () => {
-//     if (!newContent.trim()) {
-//       Alert("Content is required", "error");
-//       return;
-//     }
-
-//     try {
-//       await createPost(newContent, newImage || undefined);
-//       Alert("Post created!", "success");
-//       setNewContent("");
-//       setNewImage(null);
-//       // תעדכני את הריענון כאן אם צריך להביא מחדש את הפוסטים
-//     } catch {
-//       Alert("Failed to create post", "error");
-//     }
-//   };
-
-//   return (
-//     <div className="post-container">
-//       {/* Post Content */}
-//       <div className="post-header">
-//         <img
-//           src={
-//             typeof author === "string"
-//               ? "/default-avatar.png"
-//               : author.imageUrl || "/default-avatar.png"
-//           }
-//           alt="User"
-//           className="post-avatar"
-//         />
-//         <h3 className="post-author">
-//           {typeof author === "string" ? author : author.username}
-//         </h3>
-//       </div>
-//       <p className="post-content">{content}</p>
-//       {imageUrl && <img src={imageUrl} alt="Post" className="post-image" />}
-
-//       <div className="post-actions">
-//         <button className="like-btn" onClick={handleLike}>
-//           ❤️ {likes.length}
-//         </button>
-//         <button className="comment-btn">💬 Comment</button>
-//       </div>
-
-//       {/* Comments Section */}
-//       {comments.length > 0 && (
-//         <div className="comments-section">
-//           <h4>Comments:</h4>
-//           {comments.map((comment) => (
-//             <div key={comment._id} className="comment-box">
-//               <p>{comment.content}</p>
-//               <span className="comment-author">
-//                 -{" "}
-//                 {userDetails[comment.ownerId]?.username ||
-//                   `User ID: ${comment.ownerId}`}
-//               </span>
-//             </div>
-//           ))}
-//         </div>
-//       )}
-
-//       {/* New Post Section (optional upload) */}
-//       {currentUser && (
-//         <div className="new-post-section">
-//           <h4>Create a new post</h4>
-//           <textarea
-//             value={newContent}
-//             onChange={(e) => setNewContent(e.target.value)}
-//             placeholder="What's on your mind?"
-//           />
-//           <input
-//             type="file"
-//             accept="image/*"
-//             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-//               if (e.target.files && e.target.files.length > 0) {
-//                 setNewImage(e.target.files[0]);
-//               }
-//             }}
-//           />
-//           <button onClick={handlePostSubmit}>Post</button>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Post;
-
-// import React, { useState, useEffect, ChangeEvent } from "react";
-// import { IPost, IUser, IComment } from "../types";
-// //import { useNavigate } from "react-router-dom";
-// import { fetchCommentsByPost } from "../services/comment-service";
-// import { fetchUserProfile } from "../services/user-service";
-// import { toggleLikePost, createPost } from "../services/posts-service";
-// import Alert from "../components/Alert";
-// import "./Post.css";
-
-// interface PostProps {
-//   post: IPost;
-//   currentUser: IUser | null;
-// }
-
-// const Post: React.FC<PostProps> = ({ post, currentUser }) => {
-//   //const navigate = useNavigate();
-//   const { _id, author, content, imageUrl } = post;
-//   // const isOwner =
-//   //   currentUser?._id === (typeof author === "string" ? author : author._id);
-
+//   const [postAuthor, setPostAuthor] = useState<IUser | null>(null);
 //   const [postLikes, setPostLikes] = useState<string[]>(
 //     post.likes.map((like) => (typeof like === "string" ? like : like._id))
 //   );
-//   const [comments, setComments] = useState<IComment[]>([]);
-//   const [userDetails, setUserDetails] = useState<{ [key: string]: IUser }>({});
-//   const [newContent, setNewContent] = useState("");
-//   const [newImage, setNewImage] = useState<File | null>(null);
+//   const [isEditing, setIsEditing] = useState(false);
+//   const [editedContent, setEditedContent] = useState(content);
+//   const [showComments, setShowComments] = useState(false);
+
+//   const isOwner =
+//     currentUser && post.author && typeof post.author === "string"
+//       ? post.author === currentUser._id
+//       : (post.author as IUser)?._id === currentUser?._id;
 
 //   useEffect(() => {
-//     const loadComments = async () => {
-//       try {
-//         const fetchedComments = await fetchCommentsByPost(_id);
-//         setComments(fetchedComments);
-
-//         const userFetches = fetchedComments.map(async (comment) => {
-//           if (!(comment.ownerId in userDetails)) {
-//             const user = await fetchUserProfile(comment.ownerId);
-//             return { [comment.ownerId]: user };
-//           }
-//           return null;
-//         });
-
-//         const usersArray = await Promise.all(userFetches);
-//         const usersObject = usersArray.reduce((acc, user) => {
-//           if (user) return { ...acc, ...user };
-//           return acc;
-//         }, {});
-
-//         setUserDetails((prev) => ({ ...prev, ...usersObject }));
-//       } catch (error) {
-//         console.error("Error loading comments:", error);
+//     const loadAuthor = async () => {
+//       if (typeof post.author === "string") {
+//         const user = await fetchUserProfile(post.author);
+//         setPostAuthor(user);
+//       } else {
+//         setPostAuthor(post.author);
 //       }
 //     };
 
-//     loadComments();
-//   }, [_id]);
+//     loadAuthor();
+//   }, [post.author]);
 
 //   const handleLike = async () => {
 //     try {
 //       const { likes } = await toggleLikePost(_id);
-//       const updatedLikes = likes.map((like) =>
-//         typeof like === "string" ? like : like._id
+//       setPostLikes(
+//         likes.map((like) => (typeof like === "string" ? like : like._id))
 //       );
-//       setPostLikes(updatedLikes);
 //     } catch {
 //       Alert("Failed to like post", "error");
 //     }
 //   };
 
-//   const handlePostSubmit = async () => {
-//     if (!newContent.trim()) {
-//       Alert("Content is required", "error");
-//       return;
-//     }
-
+//   const handleDelete = async () => {
 //     try {
-//       await createPost(newContent, newImage || undefined);
-//       Alert("Post created!", "success");
-//       setNewContent("");
-//       setNewImage(null);
+//       await deletePost(_id);
+//       Alert("Post deleted", "success");
+//       window.location.reload(); // Optionally replace with state update
 //     } catch {
-//       Alert("Failed to create post", "error");
+//       Alert("Failed to delete post", "error");
 //     }
+//   };
+
+//   const handleUpdate = async () => {
+//     try {
+//       await updatePost(_id, editedContent);
+//       setIsEditing(false);
+//       Alert("Post updated", "success");
+//       window.location.reload(); // Optionally replace with state update
+//     } catch {
+//       Alert("Failed to update post", "error");
+//     }
+//   };
+
+//   const formatDate = (dateStr?: string) => {
+//     if (!dateStr) return null;
+//     const date = new Date(dateStr);
+//     return date.toLocaleString(); // Returns both date and time
 //   };
 
 //   return (
 //     <div className="post-container">
-//       {/* Post Content */}
 //       <div className="post-header">
 //         <img
-//           src={
-//             typeof author === "string"
-//               ? "/default-avatar.png"
-//               : author.imageUrl || "/default-avatar.png"
-//           }
-//           alt="User"
 //           className="post-avatar"
+//           src={postAuthor?.imageUrl || "/src/assets/photo.png"}
+//           alt="avatar"
 //         />
-//         <h3 className="post-author">
-//           {typeof author === "string" ? author : author.username}
+//         <h3
+//           className="post-author clickable"
+//           onClick={() => navigate(`/profile/${postAuthor?._id}`)}
+//         >
+//           {postAuthor?.username || "Unknown"}
 //         </h3>
 //       </div>
-//       <p className="post-content">{content}</p>
-//       {imageUrl && <img src={imageUrl} alt="Post" className="post-image" />}
+
+//       <p className="post-date">
+//         {updatedAt && updatedAt !== createdAt
+//           ? `Updated: ${formatDate(updatedAt)}`
+//           : `Posted: ${formatDate(createdAt)}`}
+//       </p>
+
+//       {isEditing ? (
+//         <div className="edit-box">
+//           <textarea
+//             className="edit-textarea"
+//             value={editedContent}
+//             onChange={(e) => setEditedContent(e.target.value)}
+//           />
+//           <div className="edit-actions">
+//             <button onClick={handleUpdate}>Save</button>
+//             <button onClick={() => setIsEditing(false)}>Cancel</button>
+//           </div>
+//         </div>
+//       ) : (
+//         <>
+//           <p className="post-content">{content}</p>
+//           {imageUrl && <img src={imageUrl} className="post-image" alt="Post" />}
+//         </>
+//       )}
 
 //       <div className="post-actions">
 //         <button className="like-btn" onClick={handleLike}>
-//           ❤️ {postLikes.length}
+//           Like ({postLikes.length})
 //         </button>
-//         <button className="comment-btn">💬 Comment</button>
+//         <button className="comment-btn" onClick={() => setShowComments(true)}>
+//           Comments
+//         </button>
+
+//         {isOwner && !isEditing && (
+//           <>
+//             <button className="edit-btn" onClick={() => setIsEditing(true)}>
+//               Edit
+//             </button>
+//             <button className="delete-btn" onClick={handleDelete}>
+//               Delete
+//             </button>
+//           </>
+//         )}
 //       </div>
 
-//       {/* Comments Section */}
-//       {comments.length > 0 && (
-//         <div className="comments-section">
-//           <h4>Comments:</h4>
-//           {comments.map((comment) => (
-//             <div key={comment._id} className="comment-box">
-//               <p>{comment.content}</p>
-//               <span className="comment-author">
-//                 -{" "}
-//                 {userDetails[comment.ownerId]?.username ||
-//                   `User ID: ${comment.ownerId}`}
-//               </span>
-//             </div>
-//           ))}
-//         </div>
-//       )}
-
-//       {/* New Post Section (optional upload) */}
-//       {currentUser && (
-//         <div className="new-post-section">
-//           <h4>Create a new post</h4>
-//           <textarea
-//             value={newContent}
-//             onChange={(e) => setNewContent(e.target.value)}
-//             placeholder="What's on your mind?"
-//           />
-//           <input
-//             type="file"
-//             accept="image/*"
-//             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-//               if (e.target.files && e.target.files.length > 0) {
-//                 setNewImage(e.target.files[0]);
-//               }
-//             }}
-//           />
-//           <button onClick={handlePostSubmit}>Post</button>
+//       {showComments && (
+//         <div className="comment-modal">
+//           <div className="modal-content">
+//             <h3>Comments for this post</h3>
+//             <p>Coming soon...</p>
+//             <button onClick={() => setShowComments(false)}>Close</button>
+//           </div>
 //         </div>
 //       )}
 //     </div>
@@ -304,12 +159,17 @@
 
 // export default Post;
 
-import React, { useState, useEffect } from "react";
-import { IPost, IUser, IComment } from "../types";
-import { fetchCommentsByPost } from "../services/comment-service";
+import React, { useState } from "react";
+import { IPost, IUser } from "../types";
+import {
+  likePost,
+  unlikePost,
+  deletePost,
+  updatePost,
+} from "../services/posts-service";
 import { fetchUserProfile } from "../services/user-service";
-import { toggleLikePost } from "../services/posts-service";
-import Alert from "../components/Alert";
+import { useNavigate } from "react-router-dom";
+import Alert from "./Alert";
 import "./Post.css";
 
 interface PostProps {
@@ -318,109 +178,188 @@ interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({ post, currentUser }) => {
-  const { _id, author, content, imageUrl } = post;
-
-  // נבדוק האם המשתמש המחובר הוא זה שפרסם את הפוסט
-  const isOwner =
-    currentUser?._id === (typeof author === "string" ? author : author?._id);
+  const { _id, content, imageUrl, createdAt, updatedAt } = post;
+  const navigate = useNavigate();
 
   const [postLikes, setPostLikes] = useState<string[]>(
     post.likes.map((like) => (typeof like === "string" ? like : like._id))
   );
-  const [comments, setComments] = useState<IComment[]>([]);
-  const [userDetails, setUserDetails] = useState<{ [key: string]: IUser }>({});
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState(content);
+  const [showComments, setShowComments] = useState(false);
 
-  useEffect(() => {
-    const loadComments = async () => {
-      try {
-        const fetchedComments = await fetchCommentsByPost(_id);
-        setComments(fetchedComments);
+  // Check if current user is the post owner
+  const isOwner =
+    currentUser && post.owner && typeof post.owner === "string"
+      ? post.owner === currentUser._id
+      : (post.owner as IUser)?._id === currentUser?._id;
 
-        const userFetches = fetchedComments.map(async (comment) => {
-          if (!(comment.ownerId in userDetails)) {
-            const user = await fetchUserProfile(comment.ownerId);
-            return { [comment.ownerId]: user };
-          }
-          return null;
-        });
+  // Check if current user already liked the post
+  const isLikedByUser = currentUser
+    ? postLikes.includes(currentUser._id)
+    : false;
 
-        const usersArray = await Promise.all(userFetches);
-        const usersObject = usersArray.reduce((acc, user) => {
-          if (user) return { ...acc, ...user };
-          return acc;
-        }, {});
+  // Fetch post author's profile
+  // useEffect(() => {
+  //   const loadAuthor = async () => {
+  //     if (typeof post.author === "string") {
+  //       const user = await fetchUserProfile(post.author);
+  //       setPostAuthor(user);
+  //     } else {
+  //       setPostAuthor(post.author);
+  //     }
+  //   };
 
-        setUserDetails((prev) => ({ ...prev, ...usersObject }));
-      } catch (error) {
-        console.error("Error loading comments:", error);
-      }
-    };
+  //   loadAuthor();
+  // }, [post.author]);
 
-    loadComments();
-  }, [_id]);
+  // useEffect(() => {
+  //   const loadAuthor = async () => {
+  //     try {
+  //       if (typeof post.author === "string") {
+  //         console.log("🔍 Fetching author for ID:", post.author);
+  //         const user = await fetchUserProfile(post.author);
+  //         console.log("✅ Fetched user:", user);
+  //         setPostAuthor(user);
+  //       } else {
+  //         console.log("Author is already a full object:", post.author);
+  //         setPostAuthor(post.author);
+  //       }
+  //     } catch (error) {
+  //       console.error("❌ Failed to fetch post author:", error);
+  //     }
+  //   };
 
-  const handleLike = async () => {
+  //   loadAuthor();
+  // }, [post.author]);
+
+  // useEffect(() => {
+  //   const loadAuthor = async () => {
+  //     if (typeof post.owner === "string") {
+  //       const user = await fetchUserProfile(post.owner);
+  //       setPostAuthor(user);
+  //     } else {
+  //       setPostAuthor(post.owner);
+  //     }
+  //   };
+  //   loadAuthor();
+  // }, [post.owner]);
+  const postAuthor = post.owner as IUser;
+
+  const handleLikeToggle = async () => {
+    if (!currentUser) return;
     try {
-      const { likes } = await toggleLikePost(_id);
-      const updatedLikes = likes.map((like) =>
-        typeof like === "string" ? like : like._id
-      );
-      setPostLikes(updatedLikes);
+      if (isLikedByUser) {
+        await unlikePost(_id, currentUser._id);
+        setPostLikes(postLikes.filter((id) => id !== currentUser._id));
+      } else {
+        await likePost(_id, currentUser._id);
+        setPostLikes([...postLikes, currentUser._id]);
+      }
     } catch {
-      Alert("Failed to like post", "error");
+      Alert("Failed to toggle like", "error");
     }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deletePost(_id);
+      Alert("Post deleted", "success");
+      window.location.reload(); // Optional: trigger re-fetch from parent instead
+    } catch {
+      Alert("Failed to delete post", "error");
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      await updatePost(_id, editedContent);
+      setIsEditing(false);
+      Alert("Post updated", "success");
+      window.location.reload();
+    } catch {
+      Alert("Failed to update post", "error");
+    }
+  };
+
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return "";
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-GB") + ", " + date.toLocaleTimeString();
   };
 
   return (
     <div className="post-container">
       <div className="post-header">
         <img
-          src={
-            typeof author === "string"
-              ? "/src/assets/photo.png"
-              : author?.imageUrl || "/default-avatar.png"
-          }
-          alt="User"
           className="post-avatar"
+          src={postAuthor?.imageUrl || "/src/assets/photo.png"}
+          alt="avatar"
         />
-        <h3 className="post-author">
-          {typeof author === "string" ? author : author?.username || "Unknown"}
+        <h3
+          className="post-author clickable"
+          onClick={() => navigate(`/profile/${postAuthor?._id}`)}
+        >
+          {postAuthor?.username || "Unknown"}
         </h3>
       </div>
 
-      <p className="post-content">{content}</p>
-      {imageUrl && <img src={imageUrl} alt="Post" className="post-image" />}
+      {/* Date shown in top-right corner */}
+      <div className="post-date">
+        {updatedAt && updatedAt !== createdAt
+          ? formatDate(updatedAt)
+          : formatDate(createdAt)}
+      </div>
+
+      {isEditing ? (
+        <div className="edit-box">
+          <textarea
+            className="edit-textarea"
+            value={editedContent}
+            onChange={(e) => setEditedContent(e.target.value)}
+          />
+          <div className="edit-actions">
+            <button onClick={handleUpdate}>Save</button>
+            <button onClick={() => setIsEditing(false)}>Cancel</button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <p className="post-content">{content}</p>
+          {imageUrl && <img src={imageUrl} className="post-image" alt="Post" />}
+        </>
+      )}
 
       <div className="post-actions">
-        <button className="like-btn" onClick={handleLike}>
-          ❤️ {postLikes.length}
+        <button
+          className={`like-btn ${isLikedByUser ? "liked" : ""}`}
+          onClick={handleLikeToggle}
+        >
+          {isLikedByUser ? "Unlike" : "Like"} ({postLikes.length})
         </button>
-        <button className="comment-btn">💬 Comment</button>
+        <button className="comment-btn" onClick={() => setShowComments(true)}>
+          Comments
+        </button>
 
-        {isOwner && (
-          <button
-            className="edit-btn"
-            onClick={() => Alert("Edit clicked!", "info")}
-          >
-            ✏️ Edit
-          </button>
+        {isOwner && !isEditing && (
+          <>
+            <button className="edit-btn" onClick={() => setIsEditing(true)}>
+              Edit
+            </button>
+            <button className="delete-btn" onClick={handleDelete}>
+              Delete
+            </button>
+          </>
         )}
       </div>
 
-      {/* Comments Section */}
-      {comments.length > 0 && (
-        <div className="comments-section">
-          <h4>Comments:</h4>
-          {comments.map((comment) => (
-            <div key={comment._id} className="comment-box">
-              <p>{comment.content}</p>
-              <span className="comment-author">
-                -{" "}
-                {userDetails[comment.ownerId]?.username ||
-                  `User ID: ${comment.ownerId}`}
-              </span>
-            </div>
-          ))}
+      {showComments && (
+        <div className="comment-modal">
+          <div className="modal-content">
+            <h3>Comments for this post</h3>
+            <p>Coming soon...</p>
+            <button onClick={() => setShowComments(false)}>Close</button>
+          </div>
         </div>
       )}
     </div>

@@ -12,7 +12,7 @@ export interface IUser {
 
 export interface IPost {
   _id: string;
-  author: IUser | string;
+  owner: string | IUser;
   content: string;
   imageUrl?: string;
   likes: (string | IUser)[]; // Users who liked the post

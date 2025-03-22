@@ -59,8 +59,12 @@ export const updatePost = async (
     if (content) formData.append("content", content);
     if (image) formData.append("file", image);
 
-    const response = await apiClient.put<IPost>(`/posts/${postId}`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+    // const response = await apiClient.put<IPost>(`/posts/${postId}`, formData, {
+    //   headers: { "Content-Type": "multipart/form-data" },
+    // });
+    const response = await apiClient.put<IPost>(`/posts/${postId}`, {
+      content,
+      title: content,
     });
     return response.data;
   } catch (error) {
@@ -81,6 +85,34 @@ export const toggleLikePost = async (
   } catch (error) {
     console.error(`Error liking post ${postId}:`, error);
     throw new Error("Failed to toggle like on post");
+  }
+};
+
+export const likePost = async (
+  postId: string,
+  userId: string
+): Promise<void> => {
+  try {
+    await apiClient.post(`/posts/${postId}/like`, null, {
+      params: { userId },
+    });
+  } catch (error) {
+    console.error("Error liking post:", error);
+    throw error;
+  }
+};
+
+export const unlikePost = async (
+  postId: string,
+  userId: string
+): Promise<void> => {
+  try {
+    await apiClient.post(`/posts/${postId}/unlike`, null, {
+      params: { userId },
+    });
+  } catch (error) {
+    console.error("Error unliking post:", error);
+    throw error;
   }
 };
 

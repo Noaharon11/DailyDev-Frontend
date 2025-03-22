@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchPostsByUser } from "../services/posts-service";
 import { IUser, IPost } from "../types";
-import ProfileCard from "../components/ProfileCard";
-import UserPostsList from "../components/UserPostsList";
+//import ProfileCard from "../components/ProfileCard";
+//import UserPostsList from "../components/UserPostsList";
 import "./ProfilePage.css";
 
 const ProfilePage: React.FC = () => {
   const { userId } = useParams();
   const [user, setUser] = useState<IUser | null>(null);
-  const [posts, setPosts] = useState<IPost[]>([]);
+  const [setPosts] = useState<IPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +28,7 @@ const ProfilePage: React.FC = () => {
         // שליפת הפוסטים של המשתמש
         const userPosts = await fetchPostsByUser(userId!);
         setPosts(userPosts);
-      } catch (err) {
+      } catch {
         setError("Failed to load user data.");
       } finally {
         setLoading(false);
@@ -57,8 +57,8 @@ const ProfilePage: React.FC = () => {
       </div>
 
       {/* רשימת הפוסטים */}
-      <h2 className="posts-title">{user.username}'s Posts</h2>
-      <UserPostsList posts={posts} />
+      {/* <h2 className="posts-title">{user.username}'s Posts</h2>
+      <UserPostsList posts={posts} /> */}
     </div>
   );
 };
