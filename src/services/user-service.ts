@@ -2,27 +2,6 @@ import apiClient from "./api-client";
 import { CredentialResponse } from "@react-oauth/google";
 import { IUser, AuthResponse } from "../types";
 
-// export const registerUser = async (userData: {
-//   username: string;
-//   email: string;
-//   password: string;
-// }): Promise<{ user: IUser }> => {
-//   try {
-//     const response = await apiClient.post("/auth/register", userData);
-
-//     const { _id, email, username } = response.data as IUser;
-//     const user = { _id, email, username };
-
-//     // store user in localStorage
-//     localStorage.setItem("user", JSON.stringify(user));
-
-//     return { user };
-//   } catch (error) {
-//     console.error("Registration failed:", error);
-//     throw new Error("Registration failed. Please try again.");
-//   }
-// };
-
 export const registerUser = async (
   formData: FormData
 ): Promise<{ user: IUser }> => {
@@ -54,21 +33,19 @@ export const loginUser = async (
     password,
   });
 
-  const {
-    accessToken,
-    refreshToken,
-    _id,
-    username,
-    email: userEmail,
-  } = response.data;
+  const { accessToken, refreshToken, _id } = response.data;
 
-  const user: IUser = { _id, email: userEmail, username };
-
+  // Save tokens
   localStorage.setItem("token", accessToken);
   localStorage.setItem("refreshToken", refreshToken);
-  localStorage.setItem("user", JSON.stringify(user));
 
-  return { user, accessToken, refreshToken };
+  // Fetch full user profile
+  const fullUser = await fetchUserProfile(_id);
+
+  // Save full user in localStorage
+  localStorage.setItem("user", JSON.stringify(fullUser));
+
+  return { user: fullUser, accessToken, refreshToken };
 };
 
 export const googleSignin = async (

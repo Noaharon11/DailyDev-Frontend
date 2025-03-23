@@ -62,6 +62,12 @@ const PostsList: React.FC<PostsListProps> = ({ refreshTrigger }) => {
       setLoading(true);
       const data = await fetchAllPosts(); // Fetch from server
       setPosts(data.reverse()); // Show newest first
+      //   setPosts(
+      //     data.sort(
+      //       (a, b) =>
+      //         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      //     )
+      //   );
     } catch (err) {
       console.error("Failed to fetch posts", err);
     } finally {
