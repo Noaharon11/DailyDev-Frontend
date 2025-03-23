@@ -1,27 +1,53 @@
 import apiClient from "./api-client";
 import { CredentialResponse } from "@react-oauth/google";
-import { IUser, AuthResponse } from "../types";
+import { RegisterResponse, IUser, AuthResponse } from "../types";
 
-export const registerUser = async (
-  formData: FormData
-): Promise<{ user: IUser }> => {
-  try {
-    const response = await apiClient.post("/auth/register", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+// export const registerUser = async (
+//   formData: FormData
+// ): Promise<{ user: IUser }> => {
+//   try {
+//     const response = await apiClient.post("/auth/register", formData, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//       },
+//     });
 
-    const user = response.data as IUser;
+//     const user = response.data as IUser;
 
-    // Store user in localStorage
-    localStorage.setItem("user", JSON.stringify(user));
+//     // Store user in localStorage
+//     localStorage.setItem("user", JSON.stringify(user));
 
-    return { user };
-  } catch (error) {
-    console.error("Registration failed:", error);
-    throw new Error("Registration failed. Please try again.");
-  }
+//     return { user };
+//   } catch (error) {
+//     console.error("Registration failed:", error);
+//     throw new Error("Registration failed. Please try again.");
+//   }
+// };
+
+export const registerUser = async ({
+  username,
+  email,
+  password,
+  avatar,
+}: {
+  username: string;
+  email: string;
+  password: string;
+  avatar?: string;
+}): Promise<{ user: IUser; accessToken: string }> => {
+  const response = await apiClient.post<RegisterResponse>("/auth/register", {
+    username,
+    email,
+    password,
+    avatar,
+  });
+
+  const { token, user } = response.data;
+
+  localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify(user));
+
+  return { user, accessToken: token };
 };
 
 export const loginUser = async (

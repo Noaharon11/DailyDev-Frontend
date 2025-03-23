@@ -1,4 +1,4 @@
-/* Centering the whole page */
+/* Center the page */
 .auth-container {
   display: flex;
   justify-content: center;
@@ -38,7 +38,7 @@
   border-radius: 8px; /* More rounded */
   background: #333;
   color: white;
-  font-size: 14px;
+  font-size: 16px;
   transition: background 0.3s ease;
 }
 
@@ -107,4 +107,41 @@
 
 .terms-text a:hover {
   text-decoration: underline;
+}
+
+.file-upload-label {
+  background-color: #333;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  display: inline-block;
+}
+
+.file-upload-input {
+  display: none;
+}
+
+.avatar-preview {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto 1rem auto;
+  border: 2px solid gold;
+  display: block;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.upload-btn {
+  display: inline-block;
+  background-color: rgb(219, 218, 215);
+  color: black;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border-radius: 20px;
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 1rem;
 }

@@ -32,10 +32,15 @@ export interface IComment {
 }
 
 // ✅ Fixed `AuthResponse` - Now includes `user`
-export interface AuthResponse {
-  user: IUser; // Now it includes the user object
-  accessToken: string;
-  refreshToken: string;
+// export interface AuthResponse {
+//   user: IUser; // Now it includes the user object
+//   accessToken: string;
+//   refreshToken: string;
+// }
+
+export interface RegisterResponse {
+  user: IUser;
+  token: string;
 }
 
 export interface AuthResponse {

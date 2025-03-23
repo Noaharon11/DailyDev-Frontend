@@ -35,10 +35,16 @@
   width: 100%;
   padding: 12px;
   border: none;
-  border-radius: 10px; /* More rounded */
+  border-radius: 8px; /* More rounded */
   background: #333;
   color: white;
   font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.auth-input:focus {
+  background: #444;
+  outline: none;
 }
 
 /* Button */
@@ -47,6 +53,7 @@
   padding: 12px;
   background: #ffcc00;
   color: black; /* Better contrast */
+  font-weight: bold;
   border: none;
   border-radius: 12px; /* More rounded */
   font-size: 16px;
@@ -89,4 +96,27 @@
 
 .terms-text a {
   color: #ffcc00;
+}
+
+.avatar-preview {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto 1rem auto;
+  border: 2px solid gold;
+  display: block;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.upload-btn {
+  display: inline-block;
+  background-color: rgb(219, 218, 215);
+  color: black;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border-radius: 20px;
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 1rem;
 }
