@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from "react";
-import { IUser } from "../types";
+import { createContext, useContext, useState, useEffect } from "react";
+import { IUser } from "../types/index";
 import { logoutUser as logoutUserService } from "../services/user-service";
 
 export interface UserContextType {
@@ -15,11 +15,29 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Initialize user from localStorage if available
+  const [currentUser, setCurrentUser] = useState<IUser | null>(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return !!localStorage.getItem("user");
+  });
+
+  // Keep localStorage in sync with currentUser
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem("user", JSON.stringify(currentUser));
+      setIsAuthenticated(true);
+    } else {
+      localStorage.removeItem("user");
+      setIsAuthenticated(false);
+    }
+  }, [currentUser]);
 
   const logoutUser = async () => {
-    await logoutUserService(); // ✅ שימוש בפונקציה מהשרת
+    await logoutUserService(); // API call to logout on server
     setCurrentUser(null);
     setIsAuthenticated(false);
     localStorage.clear();
