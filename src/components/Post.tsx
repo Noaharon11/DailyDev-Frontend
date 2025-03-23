@@ -10,9 +10,12 @@ import { useNavigate } from "react-router-dom";
 import Alert, { ConfirmAlert } from "./Alert";
 import { useUser } from "../contexts/UserContext";
 import "./Post.css";
+import CommentsModal from "./CommentsModal";
+import CommentsModalPortal from "./CommentsModalPortal";
 
 interface PostProps {
   post: IPost;
+  currentUser?: IUser | null;
   onPostChanged?: () => void;
 }
 
@@ -20,6 +23,7 @@ const Post: React.FC<PostProps> = ({ post, onPostChanged }) => {
   const { currentUser } = useUser();
   const { _id, content, imageUrl, createdAt, updatedAt } = post;
   const navigate = useNavigate();
+  //const [showComments, setShowComments] = useState(false);
 
   const [postLikes, setPostLikes] = useState<string[]>(
     post.likes.map((like) => (typeof like === "string" ? like : like._id))
@@ -153,17 +157,15 @@ const Post: React.FC<PostProps> = ({ post, onPostChanged }) => {
         )}
       </div>
 
+      {/* Show Comments Modal */}
       {showComments && (
-        <div className="comment-modal">
-          <div className="modal-content">
-            <h3>Comments for this post</h3>
-            <p>Coming soon...</p>
-            <button onClick={() => setShowComments(false)}>Close</button>
-          </div>
-        </div>
+        // <CommentsModal post={post} onClose={() => setShowComments(false)} />
+        <CommentsModalPortal
+          post={post}
+          onClose={() => setShowComments(false)}
+        />
       )}
     </div>
   );
 };
-
 export default Post;

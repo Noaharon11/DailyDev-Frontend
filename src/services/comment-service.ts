@@ -1,12 +1,15 @@
 import apiClient from "./api-client";
 import { IComment } from "../types/index";
 
-// ✅ Fetch comments for a specific post
+// Fetch comments for a specific post
 export const fetchCommentsByPost = async (
   postId: string
 ): Promise<IComment[]> => {
   try {
-    const response = await apiClient.get<IComment[]>(`/comments/${postId}`);
+    //const response = await apiClient.get<IComment[]>(`/comments/${postId}`);
+    const response = await apiClient.get<IComment[]>(
+      `/posts/${postId}/comments`
+    );
     return response.data;
   } catch (error) {
     console.error(`Error fetching comments for post ${postId}:`, error);
@@ -14,7 +17,7 @@ export const fetchCommentsByPost = async (
   }
 };
 
-// ✅ Create a new comment
+//  Create a new comment
 export const addComment = async (
   postId: string,
   content: string
@@ -31,7 +34,7 @@ export const addComment = async (
   }
 };
 
-// ✅ Update an existing comment
+// Update an existing comment
 export const updateComment = async (
   commentId: string,
   content: string
@@ -47,7 +50,7 @@ export const updateComment = async (
   }
 };
 
-// ✅ Delete a comment
+//  Delete a comment
 export const deleteComment = async (commentId: string): Promise<void> => {
   try {
     await apiClient.delete(`/comments/${commentId}`);
@@ -57,7 +60,7 @@ export const deleteComment = async (commentId: string): Promise<void> => {
   }
 };
 
-// ✅ Toggle like/unlike on a comment
+// Toggle like/unlike on a comment
 export const toggleLikeComment = async (
   commentId: string
 ): Promise<{ likes: string[] }> => {

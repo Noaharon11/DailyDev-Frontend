@@ -2,17 +2,50 @@ import React from "react";
 import { IComment, IUser } from "../types";
 import "./Comment.css";
 
-interface CommentProps extends IComment {
+interface CommentProps {
+  comment: IComment;
   currentUser: IUser | null;
+  commenter: IUser | null;
+  onDelete: (commentId: string) => void;
 }
 
-const Comment: React.FC<CommentProps> = ({ content, ownerId, currentUser }) => {
-  const isOwner = currentUser?._id === ownerId;
+const Comment: React.FC<CommentProps> = ({
+  comment,
+  currentUser,
+  commenter,
+  onDelete,
+}) => {
+  const isOwner = currentUser?._id === comment.ownerId;
 
   return (
     <div className="comment-container">
-      <p className="comment-text">{content}</p>
-      {isOwner && <button className="delete-btn">🗑️</button>}
+      <div className="comment-header">
+        <img
+          src={commenter?.imageUrl || "/src/assets/photo.png"}
+          alt="avatar"
+          className="comment-avatar"
+        />
+        <div className="comment-meta">
+          <span className="comment-username">
+            {commenter?.username || "User"}
+          </span>
+          <span className="comment-date">
+            {new Date(comment.updatedAt || comment.createdAt!).toLocaleString()}
+          </span>
+        </div>
+
+        {isOwner && (
+          <button
+            className="delete-btn"
+            title="Delete comment"
+            onClick={() => onDelete(comment._id)}
+          >
+            🗑️
+          </button>
+        )}
+      </div>
+
+      <p className="comment-text">{comment.content}</p>
     </div>
   );
 };
