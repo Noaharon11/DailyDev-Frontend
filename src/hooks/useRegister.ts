@@ -176,15 +176,25 @@ import Alert from "../components/Alert";
 export const useRegister = () => {
   const navigate = useNavigate();
 
-  const register = async (userData: {
+  const register = async (data: {
     username: string;
     email: string;
     password: string;
+    avatar?: File | null;
   }): Promise<{ success: boolean; user?: IUser }> => {
     try {
-      const { user } = await registerUser(userData);
+      const formData = new FormData();
+      formData.append("username", data.username);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      if (data.avatar) {
+        formData.append("avatar", data.avatar);
+      }
+
+      const { user } = await registerUser(formData);
       Alert("Registration successful!", "success");
       navigate("/dashboard");
+
       return { success: true, user };
     } catch {
       Alert("Registration failed. Please try again.", "error");

@@ -1,0 +1,19 @@
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.posts-list .post-container {
+  border: 1px solid #333;
+  border-radius: 10px;
+  background-color: #1e1e1e;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.posts-list .post-container:hover {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}

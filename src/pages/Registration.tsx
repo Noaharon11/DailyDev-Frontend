@@ -1,138 +1,43 @@
-// // import { useRef } from "react";
-// // import { useNavigate } from "react-router-dom";
-// // import { registerUser } from "../services/user-service";
-// // import Alert from "../components/Alert";
-// // import "./Registration.css";
-
-// // function Register({ setUser }: { setUser: (user: any) => void }) {
-// //   const emailRef = useRef<HTMLInputElement>(null);
-// //   const passwordRef = useRef<HTMLInputElement>(null);
-// //   const confirmPasswordRef = useRef<HTMLInputElement>(null);
-// //   const navigate = useNavigate();
-
-// //   const handleRegister = async () => {
-// //     const email = emailRef.current?.value;
-// //     const password = passwordRef.current?.value;
-// //     const confirmPassword = confirmPasswordRef.current?.value;
-
-// //     if (!email || !password || !confirmPassword) {
-// //       Alert("Please fill out all fields.", "error");
-// //       return;
-// //     }
-
-// //     if (password !== confirmPassword) {
-// //       Alert("Passwords do not match.", "error");
-// //       return;
-// //     }
-
-// //     try {
-// //       const username = email.split("@")[0];
-// //       const user = await registerUser({ username, email, password });
-// //       setUser(user);
-// //       localStorage.setItem("user", JSON.stringify(user));
-// //       Alert("Registration successful!", "success");
-// //       navigate("/dashboard");
-// //     } catch {
-// //       Alert("Registration failed.", "error");
-// //     }
-// //   };
-
-// //   return (
-// //     <div className="auth-container">
-// //       <div className="auth-box">
-// //         <h2>Sign Up</h2>
-// //         <input ref={emailRef} type="email" placeholder="Your email" />
-// //         <input ref={passwordRef} type="password" placeholder="Password" />
-// //         <input
-// //           ref={confirmPasswordRef}
-// //           type="password"
-// //           placeholder="Confirm Password"
-// //         />
-// //         <button onClick={handleRegister}>Register</button>
-// //       </div>
-// //     </div>
-// //   );
-// // }
-
-// // export default Register;
-
 // import { useRef } from "react";
-// import { useNavigate, Link } from "react-router-dom";
-// import { registerUser, googleSignin } from "../services/user-service";
-// import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-// import Alert from "../components/Alert";
-// import "./Registration.css";
-// import { IUser } from "../types/index";
+// import { Link, useNavigate } from "react-router-dom";
+// import { useRegister } from "../hooks/useRegister";
+// import { useUser } from "../contexts/UserContext";
+// import "./Login.css"; // מותאם לקובץ העיצוב שלך
 
-// function Register({ setUser }: { setUser: (user: IUser) => void }) {
+// function Registration() {
+//   const { setCurrentUser, setIsAuthenticated } = useUser();
 //   const emailRef = useRef<HTMLInputElement>(null);
 //   const passwordRef = useRef<HTMLInputElement>(null);
-//   const confirmPasswordRef = useRef<HTMLInputElement>(null);
+//   const { register } = useRegister();
 //   const navigate = useNavigate();
 
-//   // ✅ Handle user registration
 //   const handleRegister = async () => {
 //     const email = emailRef.current?.value?.trim();
 //     const password = passwordRef.current?.value?.trim();
-//     const confirmPassword = confirmPasswordRef.current?.value?.trim();
 
-//     if (!email || !password || !confirmPassword) {
-//       Alert("Please fill out all fields.", "error");
-//       return;
-//     }
-
-//     if (password !== confirmPassword) {
-//       Alert("Passwords do not match.", "error");
+//     if (!email || !password) {
+//       alert("Please fill all fields.");
 //       return;
 //     }
 
 //     try {
 //       const username = email.split("@")[0];
-//       const authResponse = await registerUser({ username, email, password });
+//       const result = await register({ username, email, password });
 
-//       // ✅ Pass only the user object
-//       setUser(authResponse.user);
-
-//       localStorage.setItem("user", JSON.stringify(authResponse.user));
-
-//       Alert("Registration successful!", "success");
-//       navigate("/dashboard");
-//     } catch {
-//       Alert("Registration failed.", "error");
-//     }
-//   };
-
-//   // ✅ Handle Google registration/login
-//   const handleGoogleLoginSuccess = async (
-//     credentialResponse: CredentialResponse
-//   ) => {
-//     try {
-//       if (!credentialResponse.credential) {
-//         throw new Error("Google authentication failed.");
+//       if (result.success && result.user) {
+//         setCurrentUser(result.user);
+//         setIsAuthenticated(true);
+//         navigate("/dashboard");
 //       }
-
-//       const authResponse = await googleSignin({
-//         credential: credentialResponse.credential,
-//       });
-
-//       // ✅ Pass only the user object
-//       setUser(authResponse.user);
-
-//       localStorage.setItem("user", JSON.stringify(authResponse.user));
-
-//       Alert("Google Registration/Login successful!", "success");
-//       navigate("/dashboard");
-//     } catch (error) {
-//       console.error("Google registration/login error:", error);
-//       Alert("Google registration/login failed.", "error");
+//     } catch {
+//       alert("Registration failed.");
 //     }
 //   };
 
 //   return (
 //     <div className="auth-container">
 //       <div className="auth-box">
-//         <h2>Sign Up</h2>
-
+//         <h2>Sign up</h2>
 //         <div className="auth-inputs">
 //           <input
 //             ref={emailRef}
@@ -146,45 +51,34 @@
 //             placeholder="Password"
 //             className="auth-input"
 //           />
-//           <input
-//             ref={confirmPasswordRef}
-//             type="password"
-//             placeholder="Confirm Password"
-//             className="auth-input"
-//           />
 //         </div>
-
 //         <button className="auth-btn" onClick={handleRegister}>
-//           Sign Up
+//           Create Account
 //         </button>
-
 //         <div className="auth-divider">OR</div>
-
-//         <GoogleLogin
-//           onSuccess={handleGoogleLoginSuccess}
-//           onError={() => Alert("Google login failed", "error")}
-//         />
-
 //         <p className="auth-footer">
-//           Already have an account? <Link to="/login">Sign in</Link>
+//           Already have an account? <Link to="/login">Log in</Link>
 //         </p>
 //       </div>
 //     </div>
 //   );
 // }
 
-// export default Register;
+// export default Registration;
 
-import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useRegister } from "../hooks/useRegister";
-import { IUser } from "../types";
-import "./Login.css"; // שימוש בקלאסים קיימים
+import { useUser } from "../contexts/UserContext";
+import "./Login.css";
 
-function Registration({ setUser }: { setUser: (user: IUser) => void }) {
+function Registration() {
+  const { setCurrentUser, setIsAuthenticated } = useUser();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const { register } = useRegister();
+  const navigate = useNavigate();
 
   const handleRegister = async () => {
     const email = emailRef.current?.value?.trim();
@@ -197,9 +91,17 @@ function Registration({ setUser }: { setUser: (user: IUser) => void }) {
 
     try {
       const username = email.split("@")[0];
-      const result = await register({ username, email, password });
+      const result = await register({
+        username,
+        email,
+        password,
+        avatar: avatarFile,
+      });
+
       if (result.success && result.user) {
-        setUser(result.user);
+        setCurrentUser(result.user);
+        setIsAuthenticated(true);
+        navigate("/dashboard");
       }
     } catch {
       alert("Registration failed.");
@@ -221,6 +123,12 @@ function Registration({ setUser }: { setUser: (user: IUser) => void }) {
             ref={passwordRef}
             type="password"
             placeholder="Password"
+            className="auth-input"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
             className="auth-input"
           />
         </div>

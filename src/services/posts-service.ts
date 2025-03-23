@@ -31,13 +31,13 @@ export const createPost = async (content: string): Promise<IPost> => {
     const response = await apiClient.post<IPost>(
       "/posts",
       {
-        title: content, // 🔥 מוסיפים title כדי שהבק אנד לא יתלונן
+        title: content,
         content: content,
       },
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // חובה אם יש authMiddleware
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }
     );

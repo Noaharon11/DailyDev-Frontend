@@ -17,11 +17,11 @@ const PostComments = () => {
       try {
         if (!postId) return;
 
-        // ✅ Fetch the post details
+        // Fetch the post details
         const postDetails = await fetchPostById(postId);
         setPost(postDetails);
 
-        // ✅ Fetch comments using the existing function
+        // Fetch comments using the existing function
         const postComments = await fetchCommentsByPost(postId);
         setComments(postComments);
       } catch (error) {
@@ -34,14 +34,14 @@ const PostComments = () => {
     loadPostAndComments();
   }, [postId]);
 
-  // ✅ Handle adding a new comment
+  //  Handle adding a new comment
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
 
     try {
       const addedComment = await addComment(postId!, newComment);
-      setComments([...comments, addedComment]); // ✅ Update state with the new comment
-      setNewComment(""); // ✅ Clear input field
+      setComments([...comments, addedComment]); //  Update state with the new comment
+      setNewComment(""); //  Clear input field
     } catch (error) {
       console.error("Error adding comment:", error);
     }
@@ -61,12 +61,12 @@ const PostComments = () => {
             {comments.length > 0 ? (
               comments.map((comment) => (
                 <div key={comment._id} className="comment-box">
-                  <p>💬 {comment.text}</p>
+                  <p>💬 {comment.content}</p>
                   <span className="comment-author">
                     -{" "}
-                    {typeof comment.author === "string"
-                      ? comment.author
-                      : comment.author.username}
+                    {typeof comment.ownerId === "string"
+                      ? comment.ownerId
+                      : comment.ownerId.username}
                   </span>
                 </div>
               ))
@@ -75,7 +75,6 @@ const PostComments = () => {
             )}
           </div>
 
-          {/* ✅ Add Comment Input */}
           <div className="add-comment">
             <input
               type="text"

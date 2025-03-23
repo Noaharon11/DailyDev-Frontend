@@ -1,0 +1,29 @@
+.daily-challenge-card {
+  background-color: #1e1e1e;
+  border-left: 5px solid gold;
+  padding: 16px;
+  margin-top: 12px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
+}
+
+.daily-challenge-card p {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.daily-challenge-card button {
+  background-color: gold;
+  color: black;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.daily-challenge-card button:hover {
+  background-color: #ffd700;
+}

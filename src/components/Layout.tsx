@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 interface LayoutProps {
-  user: { username: string; imageUrl?: string };
+  user: { username: string; imageUrl?: string; _id: string };
   onLogout: () => void;
   children?: React.ReactNode;
 }

@@ -1,24 +1,45 @@
-// import React from "react";
+// // ProfileCard.tsx
+// import React, { useState } from "react";
 // import { IUser } from "../types";
+// import EditProfileModal from "./EditProfileModal";
 // import "./ProfileCard.css";
 
 // interface ProfileCardProps {
 //   user: IUser;
 //   isCurrentUser: boolean;
+//   onUpdate: (updatedUser: IUser) => void;
 // }
 
-// const ProfileCard: React.FC<ProfileCardProps> = ({ user, isCurrentUser }) => {
+// const ProfileCard: React.FC<ProfileCardProps> = ({
+//   user,
+//   isCurrentUser,
+//   onUpdate,
+// }) => {
+//   const [showModal, setShowModal] = useState(false);
+
 //   return (
 //     <div className="profile-card">
 //       <img
-//         src={user.imageUrl || "/default-avatar.png"}
+//         src={user.imageUrl || "/src/assets/photo.png"}
 //         alt="Profile"
 //         className="profile-avatar"
 //       />
-//       <h3>{user.username}</h3>
-//       {user.bio && <p className="profile-bio">{user.bio}</p>}
+//       <h3>{user.username || "Guest"}</h3>
+//       <p className="profile-bio">
+//         {user.bio ? user.bio : "No bio available. Click edit to add one!"}
+//       </p>
 //       {isCurrentUser && (
-//         <button className="edit-profile-btn">Edit Profile</button>
+//         <button className="edit-profile-btn" onClick={() => setShowModal(true)}>
+//           Edit Profile
+//         </button>
+//       )}
+
+//       {showModal && (
+//         <EditProfileModal
+//           user={user}
+//           onClose={() => setShowModal(false)}
+//           onUpdate={onUpdate}
+//         />
 //       )}
 //     </div>
 //   );
@@ -26,44 +47,41 @@
 
 // export default ProfileCard;
 
-import React from "react";
-import { IUser } from "../types";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useUser } from "../contexts/UserContext";
+import EditProfileModal from "./EditProfileModal";
 import "./ProfileCard.css";
 
-interface ProfileCardProps {
-  user: IUser;
-  isCurrentUser: boolean;
-}
+const ProfileCard: React.FC = () => {
+  const { currentUser } = useUser();
+  const [showModal, setShowModal] = useState(false);
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ user, isCurrentUser }) => {
-  const navigate = useNavigate();
+  if (!currentUser) return null;
 
   return (
     <div className="profile-card">
-      {/* תמונת משתמש או ברירת מחדל */}
       <img
-        src={user.imageUrl || "/src/assets/photo.png"}
+        src={currentUser.imageUrl || "/src/assets/photo.png"}
         alt="Profile"
         className="profile-avatar"
       />
-
-      {/* שם המשתמש */}
-      <h3>{user.username || "Guest"}</h3>
-
-      {/* ביוגרפיה עם טקסט ברירת מחדל */}
+      <h3>{currentUser.username || "Guest"}</h3>
       <p className="profile-bio">
-        {user.bio ? user.bio : "No bio available. Click edit to add one!"}
+        {currentUser.bio
+          ? currentUser.bio
+          : "No bio available. Click edit to add one!"}
       </p>
 
-      {/* כפתור עריכה זמין רק למשתמש הנוכחי */}
-      {isCurrentUser && (
-        <button
-          className="edit-profile-btn"
-          onClick={() => navigate("/profile/edit")}
-        >
-          Edit Profile
-        </button>
+      <button className="edit-profile-btn" onClick={() => setShowModal(true)}>
+        Edit Profile
+      </button>
+
+      {showModal && (
+        <EditProfileModal
+          user={currentUser}
+          onClose={() => setShowModal(false)}
+          onUpdate={() => {}} // לא חובה, כי currentUser מגיע מהקונטקסט ומתעדכן אוטומטית
+        />
       )}
     </div>
   );
