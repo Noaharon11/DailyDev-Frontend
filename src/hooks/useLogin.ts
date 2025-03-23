@@ -387,17 +387,20 @@
 // };
 
 // hooks/useLogin.ts
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import { loginUser, googleSignin } from "../services/user-service";
 import { CredentialResponse } from "@react-oauth/google";
 import { IUser } from "../types/index";
 import Alert from "../components/Alert";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/UserContext";
+import { useState } from "react";
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { setCurrentUser, setIsAuthenticated } = useUser();
 
   const login = async (
     email: string,
@@ -424,6 +427,9 @@ export const useLogin = () => {
     try {
       setLoading(true);
       const { user } = await googleSignin(credentialResponse);
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+
       Alert("Google login successful!", "success");
       navigate("/dashboard");
       return { success: true, user };

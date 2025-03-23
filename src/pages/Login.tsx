@@ -104,6 +104,24 @@ function Login() {
     }
   };
 
+  // const handleGoogleLoginSuccess = async (
+  //   credentialResponse: CredentialResponse
+  // ) => {
+  //   if (!credentialResponse.credential) {
+  //     alert("Missing Google credential.");
+  //     return;
+  //   }
+
+  //   const result = await loginWithGoogle(credentialResponse);
+  //   if (result.success && result.user) {
+  //     setCurrentUser(result.user);
+  //     setIsAuthenticated(true);
+  //     navigate("/dashboard");
+  //   } else {
+  //     alert("Google login failed.");
+  //   }
+  // };
+
   const handleGoogleLoginSuccess = async (
     credentialResponse: CredentialResponse
   ) => {
@@ -112,14 +130,7 @@ function Login() {
       return;
     }
 
-    const result = await loginWithGoogle(credentialResponse);
-    if (result.success && result.user) {
-      setCurrentUser(result.user);
-      setIsAuthenticated(true);
-      navigate("/dashboard");
-    } else {
-      alert("Google login failed.");
-    }
+    await loginWithGoogle(credentialResponse);
   };
 
   return (

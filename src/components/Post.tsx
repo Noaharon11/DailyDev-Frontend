@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Alert, { ConfirmAlert } from "./Alert";
 import { useUser } from "../contexts/UserContext";
 import "./Post.css";
-import CommentsModal from "./CommentsModal";
+//import CommentsModal from "./CommentsModal";
 import CommentsModalPortal from "./CommentsModalPortal";
 
 interface PostProps {
@@ -94,24 +94,33 @@ const Post: React.FC<PostProps> = ({ post, onPostChanged }) => {
 
   return (
     <div className="post-container">
-      <div className="post-header">
-        <img
-          className="post-avatar"
-          src={postAuthor?.imageUrl || "/src/assets/photo.png"}
-          alt="avatar"
-        />
-        <h3
-          className="post-author clickable"
-          onClick={() => navigate("/profile/" + postAuthor?._id)}
-        >
-          {postAuthor?.username || "Unknown"}
-        </h3>
-      </div>
+      <div className="post-header-row">
+        <div className="post-header">
+          <img
+            className="post-avatar"
+            src={postAuthor?.imageUrl || "/src/assets/photo.png"}
+            alt="avatar"
+          />
+          <h3
+            className="post-author clickable"
+            onClick={() => navigate("/profile/" + postAuthor?._id)}
+          >
+            {postAuthor?.username || "Unknown"}
+          </h3>
+        </div>
 
-      <div className="post-date">
-        {updatedAt && updatedAt !== createdAt
-          ? formatDate(updatedAt)
-          : formatDate(createdAt)}
+        <div className="post-meta">
+          <span className="post-date">
+            {updatedAt && updatedAt !== createdAt
+              ? formatDate(updatedAt)
+              : formatDate(createdAt)}
+          </span>
+          {isOwner && !isEditing && (
+            <button className="delete-btn" onClick={handleDelete}>
+              Delete
+            </button>
+          )}
+        </div>
       </div>
 
       {isEditing ? (

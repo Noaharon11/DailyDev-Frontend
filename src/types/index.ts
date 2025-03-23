@@ -51,6 +51,11 @@ export interface AuthResponse {
   username: string;
 }
 
+export interface GoogleAuthResponse extends AuthResponse {
+  profilePicture?: string;
+  bio?: string;
+}
+
 export interface ISearchResult {
   id: string;
   name: string;

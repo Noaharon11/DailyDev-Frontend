@@ -278,7 +278,7 @@
 }
 
 .edit-btn:hover {
-  color: #00c3ff;
+  color: #f1f4f6;
   background-color: rgba(0, 195, 255, 0.1);
 }
 
@@ -376,10 +376,21 @@
   background-color: #ffaa00;
 }
 
+.post-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .post-date {
-  position: absolute;
-  top: 15px;
-  right: 20px;
+  position: static; /* הסר את absolute */
   font-size: 13px;
   color: #aaa;
 }

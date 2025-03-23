@@ -58,7 +58,7 @@
   cursor: pointer;
   font-weight: bold;
 } */
-
+/* 
 .dashboard-container {
   display: flex;
   justify-content: center;
@@ -114,4 +114,76 @@
   font-size: 22px;
   font-weight: 600;
   color: #facc15;
+} */
+
+.dashboard-layout {
+  background-color: #111;
+  color: #fff;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 40px;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.dashboard-sidebar {
+  position: relative;
+}
+
+.dashboard-main {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.dashboard-welcome {
+  font-size: 32px;
+  font-weight: bold;
+  color: #facc15;
+}
+
+.daily-challenge-box {
+  background-color: #1f1f1f;
+  border: 2px solid #facc15;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.challenge-btn {
+  background-color: #facc15;
+  color: black;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #facc15;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .dashboard-sidebar {
+    order: 2;
+  }
+
+  .dashboard-main {
+    order: 1;
+  }
 }

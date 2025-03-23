@@ -1,45 +1,28 @@
 import apiClient from "./api-client";
 import { CredentialResponse } from "@react-oauth/google";
-import { RegisterResponse, IUser, AuthResponse } from "../types";
-
-// export const registerUser = async (
-//   formData: FormData
-// ): Promise<{ user: IUser }> => {
-//   try {
-//     const response = await apiClient.post("/auth/register", formData, {
-//       headers: {
-//         "Content-Type": "multipart/form-data",
-//       },
-//     });
-
-//     const user = response.data as IUser;
-
-//     // Store user in localStorage
-//     localStorage.setItem("user", JSON.stringify(user));
-
-//     return { user };
-//   } catch (error) {
-//     console.error("Registration failed:", error);
-//     throw new Error("Registration failed. Please try again.");
-//   }
-// };
+import {
+  RegisterResponse,
+  IUser,
+  AuthResponse,
+  GoogleAuthResponse,
+} from "../types";
 
 export const registerUser = async ({
   username,
   email,
   password,
-  avatar,
+  imageUrl,
 }: {
   username: string;
   email: string;
   password: string;
-  avatar?: string;
+  imageUrl?: string;
 }): Promise<{ user: IUser; accessToken: string }> => {
   const response = await apiClient.post<RegisterResponse>("/auth/register", {
     username,
     email,
     password,
-    avatar,
+    imageUrl,
   });
 
   const { token, user } = response.data;
@@ -77,17 +60,35 @@ export const loginUser = async (
 export const googleSignin = async (
   credentialResponse: CredentialResponse
 ): Promise<{ user: IUser; accessToken: string; refreshToken: string }> => {
-  const response = await apiClient.post<AuthResponse>("/auth/googleSignIn", {
-    credential: credentialResponse.credential,
-  });
+  const response = await apiClient.post<GoogleAuthResponse>(
+    "/auth/googleSignIn",
+    {
+      credential: credentialResponse.credential,
+    }
+  );
 
-  const { accessToken, refreshToken, _id, username, email } = response.data;
+  const {
+    accessToken,
+    refreshToken,
+    _id,
+    username,
+    email,
+    profilePicture = "",
+    bio = "",
+  } = response.data;
 
-  const user: IUser = { _id, email, username };
+  const user: IUser = {
+    _id,
+    email,
+    username,
+    imageUrl: profilePicture,
+    bio,
+  };
 
+  // Store in localStorage
+  localStorage.setItem("user", JSON.stringify(user));
   localStorage.setItem("token", accessToken);
   localStorage.setItem("refreshToken", refreshToken);
-  localStorage.setItem("user", JSON.stringify(user));
 
   return { user, accessToken, refreshToken };
 };
@@ -153,6 +154,8 @@ export const updateUserProfile = async (data: {
         },
       }
     );
+    console.log("Sending token:", `Bearer ${localStorage.getItem("token")}`);
+
     return response.data.user;
   } catch (error) {
     console.error("Error updating user profile:", error);

@@ -15,15 +15,17 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // Initialize user from localStorage if available
-  const [currentUser, setCurrentUser] = useState<IUser | null>(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    return !!localStorage.getItem("user");
-  });
+  // Load user from localStorage once when the app starts
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser));
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   // Keep localStorage in sync with currentUser
   useEffect(() => {
@@ -37,7 +39,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [currentUser]);
 
   const logoutUser = async () => {
-    await logoutUserService(); // API call to logout on server
+    await logoutUserService();
     setCurrentUser(null);
     setIsAuthenticated(false);
     localStorage.clear();
