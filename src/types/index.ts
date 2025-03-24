@@ -21,12 +21,26 @@ export interface IPost {
   updatedAt?: string;
 }
 
+// export interface IComment {
+//   _id: string;
+//   ownerId: string;
+//   postId: string;
+//   content: string;
+//   likes: string[]; // Array of user IDs who liked the comment
+//   createdAt?: string;
+//   updatedAt?: string;
+// }
+
 export interface IComment {
   _id: string;
-  ownerId: string;
+  comment: string; // ✅ was "content"
+  owner: {
+    _id: string;
+    username: string;
+    avatar?: string;
+  };
   postId: string;
-  content: string;
-  likes: string[]; // Array of user IDs who liked the comment
+  likes?: string[];
   createdAt?: string;
   updatedAt?: string;
 }

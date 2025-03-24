@@ -1,128 +1,206 @@
-/* NAVBAR בסיסי */
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 24px;
-  background-color: #1e1e1e;
-  color: #fff;
-  position: relative;
-  z-index: 50;
+/* .post-container {
+  background-color: #1c1c1c;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+  transition: 0.3s ease;
 }
 
-.logo-img {
+.post-container:hover {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.post-avatar {
+  width: 40px;
   height: 40px;
-}
-
-/* 🔍 חיפוש */
-.search-container {
-  position: relative;
-  flex: 1;
-  max-width: 500px;
-  margin: 0 24px;
-}
-
-.search-input {
-  width: 100%;
-  padding: 10px 16px;
-  border-radius: 30px;
-  border: none;
-  background-color: #2a2a2a;
-  color: #fff;
-  font-size: 14px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-}
-
-.search-input:focus {
-  outline: none;
-  background-color: #333;
-}
-
-/* 📋 תוצאות */
-.search-results {
-  position: absolute;
-  top: 110%;
-  left: 0;
-  right: 0;
-  background-color: #2a2a2a;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  max-height: 320px;
-  overflow-y: auto;
-  z-index: 999;
-}
-
-.search-result {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.search-result:hover {
-  background-color: #3a3a3a;
-}
-
-.search-avatar {
-  width: 36px;
-  height: 36px;
   border-radius: 50%;
+  object-fit: cover;
   margin-right: 12px;
-  object-fit: cover;
-  background-color: #555;
 }
 
-.search-text {
+.post-username {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #f5f5f5;
+}
+
+.post-date {
+  font-size: 0.85rem;
+  color: #bbbbbb;
+  margin-bottom: 10px;
+}
+
+.post-content {
+  font-size: 1rem;
+  color: #e0e0e0;
+  margin-bottom: 15px;
+  white-space: pre-wrap;
+}
+
+.post-buttons {
   display: flex;
-  flex-direction: column;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.search-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: #fff;
+.post-button {
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+  border: 1px solid #444;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-size: 0.9rem;
 }
 
-.search-subtitle {
-  font-size: 12px;
-  color: #aaa;
+.post-button:hover {
+  background-color: #444;
 }
 
-/* קישורים נוספים */
-.navbar-links a {
-  margin: 0 12px;
-  text-decoration: none;
-  color: #fff;
-  font-weight: 500;
+.post-button.delete {
+  background-color: #441010;
+  color: #ffcccc;
+  border-color: #aa4444;
 }
 
-.navbar-links a:hover {
-  color: #f0c040;
+.post-button.delete:hover {
+  background-color: #661a1a;
+  color: #ffffff;
+  border-color: #ff5555;
 }
 
-/* יוזר */
-.navbar-user {
+.post-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.post-actions-top {
   display: flex;
   align-items: center;
-  gap: 12px;
+}
+ */
+
+.post-container {
+  background-color: #1c1c1c;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+  transition: 0.3s ease;
 }
 
-.user-avatar {
-  width: 36px;
-  height: 36px;
+.post-container:hover {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.post-avatar {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
+  margin-right: 12px;
 }
 
-.logout-btn {
-  background: transparent;
-  border: none;
-  color: #ccc;
+.post-username {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #f5f5f5;
   cursor: pointer;
-  font-size: 14px;
 }
 
-.logout-btn:hover {
-  color: #f88;
+.post-date {
+  font-size: 0.85rem;
+  color: #bbbbbb;
+  margin-top: 2px;
+}
+
+.post-content {
+  font-size: 1rem;
+  color: #e0e0e0;
+  margin-bottom: 15px;
+  white-space: pre-wrap;
+}
+
+.post-image {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-top: 10px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.post-buttons,
+.post-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.post-button,
+.like-btn,
+.comment-btn,
+.edit-btn,
+.delete-btn {
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+  border: 1px solid #444;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.post-button:hover,
+.like-btn:hover,
+.comment-btn:hover,
+.edit-btn:hover {
+  background-color: #444;
+}
+
+.post-button.delete,
+.delete-btn {
+  background-color: #441010;
+  color: #ffcccc;
+  border-color: #aa4444;
+}
+
+.post-button.delete:hover,
+.delete-btn:hover {
+  background-color: #661a1a;
+  color: #ffffff;
+  border-color: #ff5555;
+}
+
+.post-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.post-actions-top {
+  display: flex;
+  align-items: center;
 }

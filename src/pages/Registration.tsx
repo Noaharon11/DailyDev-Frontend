@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRegister } from "../hooks/useRegister";
 import { useUser } from "../contexts/UserContext";
-import "./Registration.css";
+import "./Login.css"; // עדכני אם יש Registration.css
 import { loginUser } from "../services/user-service";
 
 function Registration() {
@@ -37,7 +37,7 @@ function Registration() {
         username,
         email,
         password,
-        avatar: avatarFile,
+        imageUrl: avatarFile,
       });
 
       if (result.success) {
