@@ -1,6 +1,5 @@
 import apiClient from "./api-client";
-import { IPost, ILikeUser } from "../types/index";
-import { head } from "axios";
+import { IPost, IUser } from "../types/index";
 
 // Fetch all posts (supports pagination)
 export const fetchAllPosts = async (page: number = 1): Promise<IPost[]> => {
@@ -63,10 +62,6 @@ export const updatePost = async (
     const formData = new FormData();
     if (content) formData.append("content", content);
     if (image) formData.append("file", image);
-
-    // const response = await apiClient.put<IPost>(`/posts/${postId}`, formData, {
-    //   headers: { "Content-Type": "multipart/form-data" },
-    // });
     const response = await apiClient.put<IPost>(`/posts/${postId}`, {
       content,
       title: content,
@@ -78,63 +73,34 @@ export const updatePost = async (
   }
 };
 
-// // Like or unlike a post (toggle)
-// export const toggleLikePost = async (
-//   postId: string
-// ): Promise<{ likes: (string | IPost)[] }> => {
-//   try {
-//     const response = await apiClient.post<{ likes: (string | IPost)[] }>(
-//       `/posts/${postId}/like`
-//     );
-//     return response.data;
-//   } catch (error) {
-//     console.error(`Error liking post ${postId}:`, error);
-//     throw new Error("Failed to toggle like on post");
-//   }
-// };
-
-// Like a post
-export const likePost = async (
-  postId: string,
-  userId: string
-): Promise<void> => {
+export const likePost = async (postId: string, userId: string) => {
   try {
-    await apiClient.post(`/posts/${postId}/like`, null, {
-      params: { userId },
-    });
+    await apiClient.post(`/posts/${postId}/like`, { userId });
   } catch (error) {
     console.error("Error liking post:", error);
-    throw error;
+    throw new Error("Failed to like post");
   }
 };
 
-// Unlike a post
-export const unlikePost = async (
-  postId: string,
-  userId: string
-): Promise<void> => {
+export const unlikePost = async (postId: string, userId: string) => {
   try {
-    await apiClient.post(`/posts/${postId}/unlike`, null, {
-      params: { userId },
-    });
+    await apiClient.post(`/posts/${postId}/unlike`, { userId });
   } catch (error) {
     console.error("Error unliking post:", error);
-    throw error;
+    throw new Error("Failed to unlike post");
   }
 };
 
-// Get likes for a post
-export const getLikes = async (postId: string): Promise<ILikeUser[]> => {
+export const fetchLikesForPost = async (postId: string): Promise<IUser[]> => {
   try {
-    const response = await apiClient.get(`/posts/${postId}/likes`);
-    return response.data as ILikeUser[];
+    const response = await apiClient.get<IUser[]>(`/posts/${postId}/likes`);
+    return response.data;
   } catch (error) {
     console.error(`Error fetching likes for post ${postId}:`, error);
-    throw error;
+    throw new Error("Failed to fetch likes");
   }
 };
 
-// Delete a post
 export const deletePost = async (postId: string): Promise<void> => {
   try {
     await apiClient.delete(`/posts/${postId}`);
@@ -143,17 +109,6 @@ export const deletePost = async (postId: string): Promise<void> => {
     throw new Error("Failed to delete post");
   }
 };
-
-//  Fetch all posts by a specific user
-// export const fetchPostsByUser = async (userId: string): Promise<IPost[]> => {
-//   try {
-//     const response = await apiClient.get<IPost[]>(`/posts/user/${userId}`);
-//     return response.data;
-//   } catch (error) {
-//     console.error(`Error fetching posts for user ${userId}:`, error);
-//     throw new Error("Failed to fetch user's posts");
-//   }
-// };
 
 export const fetchPostsByUser = async (userId: string): Promise<IPost[]> => {
   try {
