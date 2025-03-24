@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ProfileCard from "../components/ProfileCard";
 import PostsList from "../components/PostsList";
-import AiChallenge from "../components/AiChallenge";
+//import AiChallenge from "../components/AiChallenge";
 import CreatePost from "../components/CreatePost";
 import "./Dashboard.css";
 
@@ -24,8 +24,19 @@ const Dashboard: React.FC = () => {
 
           <section className="daily-challenge-box">
             <h2>🔥 Daily Challenge</h2>
-            <AiChallenge />
+            <p className="challenge-summary">
+              Looking for a coding challenge? Visit our Challenge page and get a
+              new AI-generated task every day!
+            </p>
+            <a href="/challenges" className="go-to-challenge-btn">
+              🚀 Go to Challenge
+            </a>
           </section>
+
+          {/* <section className="daily-challenge-box">
+            <h2>🔥 Daily Challenge</h2>
+            <AiChallenge />
+          </section> */}
 
           <CreatePost onPostCreated={handlePostCreated} />
 

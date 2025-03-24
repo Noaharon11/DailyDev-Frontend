@@ -1,25 +1,88 @@
-.ai-challenge-container {
+.ai-challenge-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  min-height: 70vh;
+  background-color: #111;
+}
+
+.ai-challenge-box {
+  background-color: #1a1a1a;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+  border: 2px solid #facc15;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
+}
+
+.ai-main-title {
+  font-size: 2rem;
+  color: #facc15;
+  margin-bottom: 10px;
+}
+
+.ai-sub-text {
+  font-size: 1.1rem;
+  color: #ccc;
+  margin-bottom: 30px;
+}
+
+.ai-input-group {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 10px;
+  align-items: center;
 }
 
 .ai-input {
-  padding: 10px;
-  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+  padding: 14px 16px;
+  border-radius: 12px;
   border: none;
   font-size: 1rem;
   background-color: #2c2c2c;
   color: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.ai-input:focus {
+  box-shadow: 0 0 0 2px #facc15;
+  background-color: #333;
+}
+
+.ai-button {
+  padding: 14px 24px;
+  background-color: #facc15;
+  color: #000;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ai-button:hover {
+  background-color: #e5b80c;
+}
+
+.ai-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .ai-challenge-result {
-  margin-top: 15px;
+  margin-top: 30px;
   background-color: #2c2c2c;
-  border-radius: 10px;
-  padding: 12px;
-  white-space: pre-wrap;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
   color: #facc15;
   border: 1px solid #facc15;
+  white-space: pre-wrap;
 }

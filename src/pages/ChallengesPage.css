@@ -1,3 +1,64 @@
+/* .challenges-page {
+  background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+  color: #fff;
+  min-height: 100vh;
+  padding: 80px 20px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.challenge-container {
+  background-color: #1f1f1f;
+  border: 2px solid #facc15;
+  border-radius: 20px;
+  padding: 40px 30px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(250, 204, 21, 0.15);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.challenge-container:hover {
+  transform: scale(1.01);
+}
+
+.challenge-title {
+  font-size: 42px;
+  color: #facc15;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.challenge-description {
+  font-size: 18px;
+  color: #ccc;
+  margin-bottom: 30px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.challenge-card {
+  background-color: #2a2a2a;
+  padding: 24px;
+  border-radius: 14px;
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.1);
+  transition: background 0.3s ease;
+}
+
+.challenge-card:hover {
+  background-color: #333;
+}
+
+.motivational-line {
+  margin-top: 32px;
+  font-size: 16px;
+  color: #999;
+  font-style: italic;
+} */
+
 .challenges-page {
   background-color: #111;
   color: #fff;

@@ -79,9 +79,9 @@ const Comment: React.FC<CommentProps> = ({
         />
         <div className="comment-meta">
           <span className="comment-username">{comment.owner.username}</span>
-          <span className="comment-date">
+          {/* <span className="comment-date">
             {new Date(comment.updatedAt || comment.createdAt!).toLocaleString()}
-          </span>
+          </span> */}
         </div>
 
         {isOwner && (

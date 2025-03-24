@@ -26,8 +26,10 @@
 .dashboard-main {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 50x;
   width: 100%;
+  margin-top: 5px;
+  margin-left: auto;
 }
 
 /* 👋 Welcome */
@@ -38,13 +40,25 @@
   margin-bottom: 10px;
 }
 
-/* 🔥 Daily Challenge */
 .daily-challenge-box {
-  background-color: #1f1f1f;
-  border: 2px solid #facc15;
+  background-color: #1a1a1a;
+  border: 1px solid #facc15;
   border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 0 12px rgba(250, 204, 21, 0.1);
+  margin-top: 20px;
+  padding: 20px 24px;
+  max-width: 650px;
+  margin: 0 auto 40px; /* ממרכז את זה ומרחיק למטה */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.04);
+  margin-left: auto;
+}
+
+.daily-challenge-box h2 {
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* כפתור אתגר יומי */
@@ -68,7 +82,7 @@
 .section-title {
   font-size: 24px;
   font-weight: 600;
-  color: #facc15;
+  color: #e5e4de;
   margin-top: 20px;
 }
 
@@ -95,4 +109,24 @@
   .dashboard-main {
     order: 1;
   }
+}
+.challenge-summary {
+  color: #ccc;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+.go-to-challenge-btn {
+  display: inline-block;
+  background-color: #facc15;
+  color: black;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.go-to-challenge-btn:hover {
+  background-color: #eab308;
 }
