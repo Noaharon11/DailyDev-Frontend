@@ -21,7 +21,8 @@ interface PostProps {
 
 const Post: React.FC<PostProps> = ({ post, onPostChanged }) => {
   const { currentUser } = useUser();
-  const { _id, content, imageUrl, createdAt, updatedAt } = post;
+  const { _id, content, image, createdAt, updatedAt } = post;
+
   const navigate = useNavigate();
   //const [showComments, setShowComments] = useState(false);
 
@@ -98,7 +99,7 @@ const Post: React.FC<PostProps> = ({ post, onPostChanged }) => {
         <div className="post-header">
           <img
             className="post-avatar"
-            src={postAuthor?.imageUrl || "/src/assets/photo.png"}
+            src={postAuthor?.profilePicture || "/src/assets/photo.png"}
             alt="avatar"
           />
           <h3
@@ -138,7 +139,7 @@ const Post: React.FC<PostProps> = ({ post, onPostChanged }) => {
       ) : (
         <>
           <p className="post-content">{content}</p>
-          {imageUrl && <img src={imageUrl} className="post-image" alt="Post" />}
+          {image && <img src={image} className="post-image" alt="Post" />}
         </>
       )}
 

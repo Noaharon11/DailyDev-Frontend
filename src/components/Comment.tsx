@@ -21,7 +21,7 @@ const Comment: React.FC<CommentProps> = ({
     <div className="comment-container">
       <div className="comment-header">
         <img
-          src={commenter?.imageUrl || "/src/assets/photo.png"}
+          src={commenter?.profilePicture || "/src/assets/photo.png"}
           alt="avatar"
           className="comment-avatar"
         />

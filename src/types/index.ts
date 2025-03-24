@@ -4,7 +4,7 @@ export interface IUser {
   _id: string;
   username?: string;
   email: string;
-  imageUrl?: string;
+  profilePicture?: string;
   bio?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -14,7 +14,7 @@ export interface IPost {
   _id: string;
   owner: string | IUser;
   content: string;
-  imageUrl?: string;
+  image?: string;
   likes: (string | IUser)[]; // Users who liked the post
   commentsCount?: number; // Total number of comments on the post
   createdAt?: string;

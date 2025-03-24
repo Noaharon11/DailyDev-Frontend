@@ -1,127 +1,11 @@
-/* .dashboard-container {
-  display: flex;
-  padding: 20px;
-  gap: 30px;
-  background-color: #111;
-  color: #fff;
-}
-
-.dashboard-main {
-  flex: 1;
-}
-
-.dashboard-title {
-  font-size: 28px;
-  margin-bottom: 10px;
-  color: gold;
-}
-
-.section-title {
-  font-size: 22px;
-  margin: 20px 0 10px;
-  border-bottom: 1px solid #333;
-  padding-bottom: 4px;
-}
-
-.daily-challenge {
-  background-color: #1c1c1c;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  border-left: 4px solid gold;
-}
-
-.post-box {
-  background-color: #1c1c1c;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #333;
-}
-
-.post-box textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  background-color: #2a2a2a;
-  color: #fff;
-  resize: vertical;
-  margin-bottom: 10px;
-}
-
-.post-box button {
-  background-color: gold;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-} */
-/* 
-.dashboard-container {
-  display: flex;
-  justify-content: center;
-  padding: 40px 20px;
-  background-color: #111;
-  color: #fff;
-}
-
-.dashboard-main {
-  display: flex;
-  max-width: 1200px;
-  width: 100%;
-  gap: 30px;
-}
-
-.dashboard-sidebar {
-  flex: 1;
-  max-width: 300px;
-}
-
-.dashboard-content {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.dashboard-welcome {
-  font-size: 28px;
-  font-weight: bold;
-  color: #facc15;
-}
-
-.daily-challenge-box {
-  background-color: #1f1f1f;
-  border: 2px solid #facc15;
-  border-radius: 12px;
-  padding: 20px;
-}
-
-.challenge-btn {
-  background-color: #facc15;
-  color: black;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: bold;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.section-title {
-  font-size: 22px;
-  font-weight: 600;
-  color: #facc15;
-} */
-
 .dashboard-layout {
   background-color: #111;
   color: #fff;
-  padding: 40px 20px;
+  padding: 100px 24px 40px; /* Top padding to make space for fixed navbar */
   display: flex;
   justify-content: center;
+  box-sizing: border-box;
+  min-height: 100vh;
 }
 
 .dashboard-container {
@@ -132,51 +16,76 @@
   max-width: 1400px;
 }
 
+/* Sidebar: פרופיל */
 .dashboard-sidebar {
   position: relative;
+  width: 100%;
 }
 
+/* אזור מרכזי */
 .dashboard-main {
   display: flex;
   flex-direction: column;
   gap: 30px;
+  width: 100%;
 }
 
+/* 👋 Welcome */
 .dashboard-welcome {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: bold;
   color: #facc15;
+  margin-bottom: 10px;
 }
 
+/* 🔥 Daily Challenge */
 .daily-challenge-box {
   background-color: #1f1f1f;
   border: 2px solid #facc15;
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.1);
 }
 
+/* כפתור אתגר יומי */
 .challenge-btn {
   background-color: #facc15;
   color: black;
   border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 16px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
+.challenge-btn:hover {
+  background-color: #e0b400;
+}
+
+/* כותרת */
 .section-title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   color: #facc15;
+  margin-top: 20px;
 }
 
-/* Responsive */
+/* תמונה בפוסט */
+.post-image {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+/* 🔁 רספונסיביות */
 @media (max-width: 960px) {
   .dashboard-container {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 24px;
   }
 
   .dashboard-sidebar {
