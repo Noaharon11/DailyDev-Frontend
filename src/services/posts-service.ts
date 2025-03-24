@@ -53,19 +53,37 @@ export const createPost = async (
 };
 
 // Update an existing post (supports updating text & image)
+// export const updatePost = async (
+//   postId: string,
+//   content?: string,
+//   image?: File
+// ): Promise<IPost> => {
+//   try {
+//     const formData = new FormData();
+//     if (content) formData.append("content", content);
+//     if (image) formData.append("file", image);
+//     const response = await apiClient.put<IPost>(`/posts/${postId}`, {
+//       content,
+//       title: content,
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error(`Error updating post ${postId}:`, error);
+//     throw new Error("Failed to update post");
+//   }
+// };
+
 export const updatePost = async (
   postId: string,
   content?: string,
-  image?: File
+  imageUrl?: string,
+  userId?: string
 ): Promise<IPost> => {
   try {
-    const formData = new FormData();
-    if (content) formData.append("content", content);
-    if (image) formData.append("file", image);
-    const response = await apiClient.put<IPost>(`/posts/${postId}`, {
-      content,
-      title: content,
-    });
+    const response = await apiClient.put<IPost>(
+      `/posts/${postId}?userId=${userId}`,
+      { content, image: imageUrl }
+    );
     return response.data;
   } catch (error) {
     console.error(`Error updating post ${postId}:`, error);
