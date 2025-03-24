@@ -6,6 +6,7 @@ import {
   AuthResponse,
   GoogleAuthResponse,
 } from "../types";
+
 export const registerUser = async ({
   username,
   email,
@@ -58,7 +59,7 @@ export const loginUser = async (
 
 export const googleSignin = async (
   credentialResponse: CredentialResponse
-): Promise<{ user: IUser; accessToken: string; refreshToken: string }> => {
+): Promise<GoogleAuthResponse> => {
   const response = await apiClient.post<GoogleAuthResponse>(
     "/auth/googleSignIn",
     {
@@ -66,30 +67,7 @@ export const googleSignin = async (
     }
   );
 
-  const {
-    accessToken,
-    refreshToken,
-    _id,
-    username,
-    email,
-    profilePicture = "",
-    bio = "",
-  } = response.data;
-
-  const user: IUser = {
-    _id,
-    email,
-    username,
-    profilePicture,
-    bio,
-  };
-
-  // Store in localStorage
-  localStorage.setItem("user", JSON.stringify(user));
-  localStorage.setItem("token", accessToken);
-  localStorage.setItem("refreshToken", refreshToken);
-
-  return { user, accessToken, refreshToken };
+  return response.data;
 };
 
 export const getUserProfile = async (): Promise<IUser> => {

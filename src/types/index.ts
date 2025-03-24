@@ -65,14 +65,15 @@ export interface AuthResponse {
   username: string;
 }
 
-export interface GoogleAuthResponse extends AuthResponse {
-  profilePicture?: string;
-  bio?: string;
-}
-
 export interface ISearchResult {
   id: string;
   name: string;
   type: "post" | "user";
   link: string;
+}
+
+export interface GoogleAuthResponse {
+  user: IUser;
+  accessToken: string;
+  refreshToken: string;
 }

@@ -39,7 +39,13 @@ function Login() {
       return;
     }
 
-    await loginWithGoogle(credentialResponse);
+    const result = await loginWithGoogle(credentialResponse);
+    console.log("Credential response:", credentialResponse);
+
+    if (!result.success) {
+      console.error("Google login failed:", result.error);
+      alert(result.error);
+    }
   };
 
   return (
