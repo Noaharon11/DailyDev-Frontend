@@ -43,7 +43,7 @@ const ProfilePage: React.FC = () => {
       <div className="profile-header">
         <img
           className="profile-image"
-          src={user.imageUrl || "/src/assets/photo.png"}
+          src={user.profilePicture || "/src/assets/photo.png"}
           alt="Profile"
         />
         <h2 className="profile-username">{user.username}</h2>

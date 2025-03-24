@@ -6,7 +6,6 @@ import {
   AuthResponse,
   GoogleAuthResponse,
 } from "../types";
-
 export const registerUser = async ({
   username,
   email,
@@ -81,7 +80,7 @@ export const googleSignin = async (
     _id,
     email,
     username,
-    imageUrl: profilePicture,
+    profilePicture,
     bio,
   };
 
@@ -139,26 +138,28 @@ export const fetchUserProfile = async (userId: string): Promise<IUser> => {
   }
 };
 
-export const updateUserProfile = async (data: {
+export const updateUserProfile = async ({
+  userId,
+  username,
+  bio,
+  profilePicture,
+}: {
+  userId: string;
   username: string;
-  bio: string;
-  imageUrl?: string;
+  bio?: string;
+  profilePicture?: string;
 }): Promise<IUser> => {
-  try {
-    const response = await apiClient.put<{ user: IUser }>(
-      "/user/profile",
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
-    console.log("Sending token:", `Bearer ${localStorage.getItem("token")}`);
+  const response = await apiClient.put<IUser>(
+    "/user",
+    {
+      username,
+      bio,
+      profilePicture,
+    },
+    {
+      params: { userId },
+    }
+  );
 
-    return response.data.user;
-  } catch (error) {
-    console.error("Error updating user profile:", error);
-    throw error;
-  }
+  return response.data;
 };

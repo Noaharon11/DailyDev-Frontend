@@ -15,7 +15,7 @@ const ProfileCard: React.FC = () => {
   return (
     <div className="profile-card">
       <img
-        src={currentUser.imageUrl || "/src/assets/photo.png"}
+        src={currentUser.profilePicture || "/src/assets/photo.png"}
         alt="Profile"
         className="profile-avatar"
       />

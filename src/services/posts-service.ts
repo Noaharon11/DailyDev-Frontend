@@ -25,27 +25,53 @@ export const fetchPostById = async (postId: string): Promise<IPost> => {
   }
 };
 
-// Create a new post (supports text & image upload)
-export const createPost = async (content: string): Promise<IPost> => {
-  try {
-    const response = await apiClient.post<IPost>(
-      "/posts",
-      {
-        title: content,
-        content: content,
+// export const createPost = async (
+//   content: string,
+//   imageUrl?: string
+// ): Promise<IPost> => {
+//   const response = await apiClient.post<IPost>(
+//     "/posts",
+//     {
+//       content,
+//       title: content,
+//       imageUrl,
+//     },
+//     {
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${localStorage.getItem("token")}`,
+//       },
+//     }
+//   );
+
+//   return response.data;
+// };
+
+export const createPost = async (
+  content: string,
+  image?: string
+): Promise<IPost> => {
+  const response = await apiClient.post<IPost>(
+    "/posts",
+    {
+      content,
+      title: content,
+      image,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error creating post:", error);
-    throw new Error("Failed to create post");
-  }
+    }
+  );
+
+  const post = response.data;
+
+  return {
+    ...post,
+    image: post.image,
+  };
 };
 
 // Update an existing post (supports updating text & image)
