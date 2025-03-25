@@ -7,11 +7,12 @@ import Post from "../components/Post";
 import { useUser } from "../contexts/UserContext";
 import EditProfileModal from "../components/EditProfileModal";
 import "./ProfilePage.css";
+import ChatModal from "../components/ChatModal";
 
 const ProfilePage: React.FC = () => {
   const { userId } = useParams();
   const { currentUser, setCurrentUser } = useUser();
-
+  const [showChat, setShowChat] = useState(false);
   const [user, setUser] = useState<IUser | null>(null);
   const [posts, setPosts] = useState<IPost[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -52,17 +53,24 @@ const ProfilePage: React.FC = () => {
         </p>
         <p className="profile-email">{user.email}</p>
 
-        {isCurrentUser && (
+        {isCurrentUser ? (
           <button
             className="edit-profile-btn"
             onClick={() => setShowModal(true)}
           >
             Edit Profile
           </button>
+        ) : (
+          <button
+            className="send-message-btn"
+            onClick={() => setShowChat(true)}
+          >
+            Send Message
+          </button>
         )}
       </div>
 
-      {showModal && (
+      {showModal && user && (
         <EditProfileModal
           user={user}
           onClose={() => setShowModal(false)}
@@ -70,6 +78,14 @@ const ProfilePage: React.FC = () => {
             setUser(updatedUser);
             setCurrentUser(updatedUser);
           }}
+        />
+      )}
+
+      {showChat && user && currentUser && !isCurrentUser && (
+        <ChatModal
+          currentUserId={currentUser._id}
+          otherUserId={user._id}
+          onClose={() => setShowChat(false)}
         />
       )}
 

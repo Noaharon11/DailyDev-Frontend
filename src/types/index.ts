@@ -77,3 +77,18 @@ export interface GoogleAuthResponse {
   accessToken: string;
   refreshToken: string;
 }
+
+export interface Message {
+  _id: string;
+  sender: string;
+  receiver: string;
+  content: string;
+  timestamp: string;
+  chatId: string;
+}
+
+export interface ChatModalProps {
+  currentUserId: string;
+  otherUserId: string;
+  onClose: () => void;
+}

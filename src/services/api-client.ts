@@ -30,7 +30,6 @@ apiClient.interceptors.request.use(
   }
 );
 
-// 🔄 Interceptor לטיפול בשגיאות 401 (אם ה־token לא תקף)
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -39,7 +38,7 @@ apiClient.interceptors.response.use(
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("user");
-      window.location.href = "/login"; // ניתוב מחדש לדף התחברות
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }
