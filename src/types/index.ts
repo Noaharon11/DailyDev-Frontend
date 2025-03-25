@@ -87,8 +87,15 @@ export interface Message {
   chatId: string;
 }
 
+// export interface ChatModalProps {
+//   currentUserId: string;
+//   otherUserId: string;
+//   onClose: () => void;
+// }
+
 export interface ChatModalProps {
   currentUserId: string;
   otherUserId: string;
+  otherUser: IUser; // 💡 NEW
   onClose: () => void;
 }

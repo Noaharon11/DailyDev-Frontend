@@ -83,8 +83,10 @@ const ProfilePage: React.FC = () => {
 
       {showChat && user && currentUser && !isCurrentUser && (
         <ChatModal
+          key={user._id}
           currentUserId={currentUser._id}
           otherUserId={user._id}
+          otherUser={user}
           onClose={() => setShowChat(false)}
         />
       )}

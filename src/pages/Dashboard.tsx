@@ -28,7 +28,10 @@ const Dashboard: React.FC = () => {
               Looking for a coding challenge? Visit our Challenge page and get a
               new AI-generated task every day!
             </p>
-            <a href="/challenges" className="go-to-challenge-btn">
+            <a
+              href="../pages/ChallengesPage.tsx"
+              className="go-to-challenge-btn"
+            >
               🚀 Go to Challenge
             </a>
           </section>

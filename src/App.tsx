@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Registration";
 import Dashboard from "./pages/Dashboard";
 import ProfilePage from "./pages/ProfilePage";
-import AiChallenge from "./components/AiChallenge"; // הקומפוננטה של Gemini
+import AiChallenge from "./components/AiChallenge";
 import { useUser } from "./contexts/UserContext";
 import "./App.css";
 
