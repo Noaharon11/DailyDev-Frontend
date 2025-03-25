@@ -10,7 +10,7 @@ const Footer = () => {
           <p>
             Share your coding journey, learn from others, and grow together.
           </p>
-        </div>
+        {/* </div>
         <div className="footer-section">
           <h3>Quick Links</h3>
           <ul>
@@ -28,15 +28,15 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-        <div className="footer-section">
+        <div className="footer-section"> */}
           <h3>Community</h3>
           <ul>
-            <li>
+            {/* <li>
               <a href="/guidelines">Guidelines</a>
             </li>
             <li>
               <a href="/faq">FAQ</a>
-            </li>
+            </li> */}
             <li>
               <a href="https://github.com">GitHub</a>
             </li>
